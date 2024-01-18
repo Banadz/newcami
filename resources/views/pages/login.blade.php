@@ -70,6 +70,7 @@
                                         </div>
                                     @enderror --}}
                                 </div>
+                                @include('sweetalert::alert')
                                 @if ($errors->any())
                                     {{-- <div class="modal show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">

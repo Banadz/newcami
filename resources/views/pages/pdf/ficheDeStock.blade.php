@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Demande | Bon de Commande</title>
+        <title>Stock | Impression</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,13 +49,13 @@
 
             .cellbordure,.tred,.headbordure,.theaded,.tboded{
                 border-bottom:solid 0.5px #b6baf7;
-                padding:5px;
+                padding:1px;
                 line-height: 8px;
             }
             .headbordure, .cellbordure {
                 font-size:9pt;
                 border: 0.5px solid black;
-                padding: 8px;
+                padding: 5px;
                 text-align: center;
             }
             .headbordure{
@@ -74,7 +74,7 @@
             }
             .footer{
                 position:absolute;
-                margin-top:700px;
+                margin-top:950px;
             }
             .Heading{
                 position:absolute;
@@ -95,30 +95,28 @@
                         <div class="row align-items-end">
                             <div class="col-lg-8">
                                 <div class="d-inline">
-                                    <div class="text-center">
-                                        <img src="images/imprimer/RPIM_logo.jpg" class="" alt="" srcset="" width="25%">
+                                    <div style="position: absolute; font-style: bold;">
+                                        <p>FICHE DE STOCK</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row align-items-end">
-                            <div class="col-lg-6">
-                                <div class="page-header-title">
-                                    <div class="Entete">
-                                        <p style="text-align: center; line-height: 10px;">
-                                            MINISTERE DE L'ECONOMIE ET DES FINCNACES<br>
-                                            SECRETARIAT GENERAL<br>
-                                            DIRECTION GENERALE DU BUDGET ET DES FINANCES<br>
-                                            DIRECTION DE LA SOLDE ET PENSIONS<br>
-                                            Services Régional de la Solde et Des Pensions Haute Matsiatra
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-lg-4">
-                                <div class="Entete2">
+                                <div style="position:absolute; margin-left:615px;">
                                     <p style="text-align: center;">
-                                        Fianarantsoa, le 05 Décembre 2024.
+                                        Folio n°001.
+                                    </p>
+                                </div>
+                                <div style="position: absolute; margin-left:540px; margin-top: 30px;">
+                                    <p>
+                                        <strong>Espece d'unité:</strong>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p style="position: absolute; margin-left:635px; margin-top: 32px;">
+                                        .................
                                     </p>
                                 </div>
                             </div>
@@ -126,10 +124,10 @@
                     </div>
 
                     <div class="align-items-end">
-                        <div class="col-md-12">
-                            <p style="text-align: center;"> <strong>BON de COMMANDE</strong></p>
+                        <div class="col-md-9" style="margin-top: 41px">
                             <p style="line-height: 10px;">
-                                <strong style="text-decoration: underline">Structure</strong> : Cellule d'Appui et de Coordination (C.A.C)
+                                <strong style="text-decoration: underline">
+                                    Désignation de l'article:</strong> Cahier 100 pages petit format avec un protège bleu.
                             </p>
                         </div>
 
@@ -142,21 +140,25 @@
                             <table class="fixeo">
                                 <thead class="theaded">
                                     <tr class="tred">
-                                        <th class="headbordure" style= "width=10%;">N°</th>
+                                        <th class="headbordure" style= "width=10%;" rowspan="2">Date</th>
                                         <!-- <th class="headbordure" style= "width=30%;">Compte</th>
                                         <th class="headbordure" style= "width=25%;">Catégorie</th> -->
-                                        <th class="headbordure" style= "width=60%;">Désignation</th>
-                                        <th class="headbordure" style= "width=18%;">STOCK</th>
-                                        <th class="headbordure" style= "width=18%;">Unité</th>
-                                        <th class="headbordure" style= "width=20%;">Quantité demandé</th>
-                                        <th class="headbordure" style= "width=20%;">Quantité accordé</th>
-                                        <th class="headbordure" style= "width=20%;">Quantité livré</th>
+                                        <th class="headbordure" style= "width=60%;" colspan="2">ENTRES</th>
+                                        <th class="headbordure" style= "width=18%;" colspan="2">SORTIES</th>
+                                        <th class="headbordure" style= "width=18%;" rowspan="2">STOCK</th>
+                                        <th class="headbordure" style= "width=18%;" rowspan="2">Emargement</th>
+                                    </tr>
+                                    <tr class="tred">
+                                        <th class="headbordure" style= "width=60%;">Quantité</th>
+                                        <th class="headbordure" style= "width=18%;">Cumulé</th>
+                                        <th class="headbordure" style= "width=60%;">Quantité</th>
+                                        <th class="headbordure" style= "width=18%;">Cumulé</th>
                                     </tr>
                                 </thead>
                                 <tbody class="tboded">
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -165,7 +167,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -174,7 +176,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -183,7 +185,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -192,7 +194,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -201,7 +203,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -210,7 +212,7 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
@@ -219,48 +221,18 @@
                                     </tr>
                                     <tr class="tred">
                                         <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
                                         <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
                                         <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
                                     </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">
-                                            kkkkkkkkkkkkk kkkkkkkkkkkkkkkkkkkkkk kkkkkkkkkkkkkkkkkkkk kkkkkkkkkkkkkkkkk kkkkkkkkkkkkCahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
+
+
                                 </tbody>
                             </table>
                             <!-- Language - Comma Decimal Place table end -->
-                        </div>
-
-                        <div class="row foot">
-                            <label style="font-size:11pt; margin-left:350px;font-style: bold;">Signature</label><br><br>
-                            <table class="tbFoot">
-                                <thead class="theaded">
-                                    <tr clss="tred">
-                                        <th class="headbordure" style = "width=75%;" colspan="2">Demande</th>
-                                        <th class="headbordure" style= "width=20%;">Validation</th>
-                                        <th class="headbordure" style= "width=72%;"colspan="2">Livraison</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="tboded">
-                                        <tr class="tred">
-                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;"><p style="margin-left: 25px;margin-right: 25px;">Demandeur</p></td>
-                                            <td class="cellbordure" style= "width=15%;padding-bottom:90px;">Le Dépositaire Comptable</td>
-                                            <td class="cellbordure" style= "width=45%;padding-bottom:90px;"><p style="margin-left: 20px;margin-right: 20px;">Chef(SRSPHM)</p></td>
-                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;">Le Dépositaire Comptable</td>
-                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;"><p style="margin-left: 55px;margin-right: 55px;"></p>Agent</td>
-                                        </tr>
-                                </tbody>
-                            </table>
                         </div>
                         <div class="row footer col-12" style="width:90%;">
                             <table style="width: 100%; margin-left:40px;" >

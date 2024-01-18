@@ -39,7 +39,8 @@
                     <div class="card-header justify-content-between">
                         <h3>Liste d'artcle enregistré</h3>
                         <div class="pull-right">
-                            <a class="btn btn-success" href="newOrigine"><i class="ik ik-plus-circle"></i>Ajouter</a>
+                            <a class="btn btn-info" href="newOrigine"><i class="ik ik-plus-circle"></i>Ajouter</a>
+                            <a class="btn btn-success" id="polyInsertinArticle" href="recupDonneesArticle"><i class="ik ik-folder-plus"></i>Importer</a>
                             <a class="btn btn-primary" href="newArticle"><i class="ik ik-download"></i> Nouveau</a>
                         </div>
                     </div>
@@ -112,10 +113,16 @@
     @section('updateModal')
         {{-- Update Modals --}}
         @include('pages.modals.articleUpdate')
+        @include('pages.modals.multiArticle')
+        @include('pages.modals.multiArticleUpdate')
+        @include('pages.modals.multiArticleInsert')
     @endsection
 
     @section('specialScript')
         <script src="modules/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="js/datatables.js"></script>
+        {{-- MY JS --}}
+
+        <script src="http://127.0.0.1:8000/modules/.personnel/articleOperation.js"></script>
     @endsection

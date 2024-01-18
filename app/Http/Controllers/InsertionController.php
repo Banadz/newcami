@@ -55,28 +55,56 @@ class InsertionController extends Controller
         $dataAgent = $request->input('donnees');
         $donneesAgent = json_decode($dataAgent, true);
         $eff = 0;
-        foreach($donneesAgent as $agent){
+        foreach($donneesAgent as $agentss){
             $agent = new Agent();
-            $agent->MATRICULE = $agent[0];
-            $agent->NOM = $agent[1];
-            $agent->PRENOM = $agent[2];
-            $agent->GENRE = $agent[3];
-            $agent->CODE_DIVISION = $agent[4];
+            $agent->MATRICULE = $agentss[0];
+            $agent->NOM = $agentss[1];
+            $agent->PRENOM = $agentss[2];
+            $agent->GENRE = $agentss[3];
+            $agent->CODE_DIVISION = $agentss[4];
             $agent->PHOTO = "";
-            $agent->FONCTION = $agent[5];
+            $agent->FONCTION = $agentss[5];
             $agent->TYPE = 'User';
-            $agent->EMAIL = $agent[6];
-            $agent->PSEUDO = $agent[1];
+            $agent->EMAIL = $agentss[6];
+            $agent->PSEUDO = $agentss[1];
             $agent->PASSWORD = Hash::make('0000');
-            $agent->ADRESSE_PHYSIQUE = $agent[9];
-            $agent->TELEPHONE = $agent[7];
+            $agent->ADRESSE_PHYSIQUE = $agentss[9];
+            $agent->TELEPHONE = $agentss[7];
             // return $agent;
-            // $agent->save();
+            $agent->save();
             $eff = $eff + 1;
         }
         return response()->json([
             'success' => true,
-            'eff' => $donneesAgent
+            'eff' => $eff
+        ]);
+    }
+
+    public function multiArticle (Request $request){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+
+        $dataArticle = $request->input('donnees');
+        $donneesArticle = json_decode($dataArticle, true);
+        $eff = 0;
+        foreach($donneesArticle as $articless){
+            $article = new Article();
+            $article->id_categorie = $articless[0];
+            $article->DESIGNATION = $articless[1];
+            $article->SPECIFICATION = $articless[2];
+            $article->UNITE = $articless[3];
+            $article->EFFECTIF = 0;
+            $article->DISPONIBLE = true;
+            $article->CODE_SERVICE = $code_service;
+            $article->save();
+            $eff = $eff + 1;
+        }
+        return response()->json([
+            'success' => true,
+            'eff' => $eff
         ]);
     }
 

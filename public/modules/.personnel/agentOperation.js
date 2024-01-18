@@ -321,8 +321,8 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     if(response.success){
-                        console.log(response)
-                        // alert(`success! `+ response.eff + ` Agent(s) inséré(s)` );
+                        // console.log(response)
+                        alert(`success! `+ response.eff + ` Agent(s) inséré(s)` );
                         // window.location.reload()
                     }else{
                         console.log('ERROR')

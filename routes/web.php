@@ -160,8 +160,12 @@ Route::middleware([
     Route::post('/insertionMultipleAgent', [InsertionController::class, 'multiAgent'])->name('insererMutliAgent');
 
 
+    Route::post('/importArticle', [ImportController::class, 'ImportArticle'])->name('importerArticle');
+    Route::post('/insertionMultipleArticle', [InsertionController::class, 'multiArticle'])->name('insererMutliArticle');
+
 
     Route::get('/imprimerDemande', [ImportController::class, 'ImpressionDemande'])->name('imprimerDemande');
+    Route::get('/imprimerStock', [ImportController::class, 'ImpressionStock'])->name('imprimerStock');
     // Route::post('/putinPanier', [getController::class, 'Article'])->name('putinPanier');
 
     // Route::get('/dashboard', function () {

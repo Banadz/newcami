@@ -6,6 +6,7 @@ use App\Models\Agent;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AgentImport;
+use App\Imports\ArticleImport;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ImportController extends Controller
@@ -32,6 +33,28 @@ class ImportController extends Controller
             ]);
         }
     }
+    public function ImportArticle(Request $request)
+    {
+        $request->validate([
+            'fichierExcelArticle' => 'required|mimes:xlsx,csv',
+        ]);
+
+        $filePath = $request->file('fichierExcelArticle')->getRealPath();
+
+        try {
+            // Spécifiez le type de fichier explicitement (xlsx dans cet exemple)
+            $importedData = Excel::toCollection(new ArticleImport, $filePath, null, \Maatwebsite\Excel\Excel::XLSX);
+
+            return response()->json([
+                'success' => true,
+                'data' => $importedData
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Une erreur s\'est produite lors de l\'importation.'
+            ]);
+        }
+    }
 
     public function ImpressionDemande(Request $request)
     {
@@ -43,6 +66,15 @@ class ImportController extends Controller
         return $pdf->stream('bon_de_commande.pdf');
     }
 
+    public function ImpressionStock(Request $request)
+    {
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML('<h1>Je vois ta gloire</h1>');
+        // return $pdf->download('bon_de_commande.pdf');
+
+        $pdf = pdf::loadView('pages.pdf.ficheDeStock');
+        return $pdf->stream('bon_de_commande.pdf');
+    }
 
     // public function ImportAgent(Request $request){
     //     $request->validate([
