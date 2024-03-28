@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('ADRESSE_SERVICE')->nullable(false);
             $table->string('CONTACT_SERVICE');
             $table->string('ADRESSE_MAIL');
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
         });
 

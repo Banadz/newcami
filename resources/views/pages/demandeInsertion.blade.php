@@ -8,6 +8,8 @@
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="controlQual-route" content="{{ route('controlQuant') }}">
+        <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 
@@ -20,6 +22,7 @@
         <link rel="stylesheet" href="modules/mohithg-switchery/dist/switchery.min.css">
 
 
+
         <link rel="stylesheet" href="modules/owl.carousel/dist/assets/owl.carousel.css">
         <link rel="stylesheet" href="modules/owl.carousel/dist/assets/owl.theme.default.css">
 
@@ -29,11 +32,12 @@
         <link rel="stylesheet" href="modules/icon-kit/dist/css/iconkit.min.css">
         <link rel="stylesheet" href="modules/perfect-scrollbar/css/perfect-scrollbar.css">
         <link rel="stylesheet" href="dist/css/theme.min.css">
-        <script src="src/js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="modules/sweetalert/sweetalert.min.js"></script>
+        {{-- <script src="src/js/vendor/modernizr-2.8.3.min.js"></script> --}}
+        {{-- <script src="modules/sweetalert/sweetalert.min.js"></script> --}}
+
+
 
     </head>
-
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -142,10 +146,10 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            <div class="form-group">
+                                                            <div class="form-group" id="spaceQuant">
                                                                 <label for="quantite">Quantité</label>
-                                                                <input type="Number" target="{{route('controlQuant')}}" class="form-control"
-                                                                name="quantite" id="quantite" placeholder="Effectif" required>
+                                                                <input type="Number" target="{{route('controlQuant')}}" class="form-control kwantite"
+                                                                name="" id="quantite" placeholder="Effectif" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -265,7 +269,7 @@
 
         {{-- MY JS --}}
 
-        {{-- <script src="modules/.personnel/Register.js"></script> --}}
+        <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         <script src="modules/.personnel/demandeOperation.js"></script>
     </body>
 </html>

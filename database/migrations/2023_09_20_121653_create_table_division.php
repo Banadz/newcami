@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('CODE_DIVISION')->primary();
             $table->string('LABEL_DIVISION')->nullable(false);
             $table->string('CODE_SERVICE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
 
             $table->foreign('CODE_SERVICE')->references('CODE_SERVICE')->on('SERVICE')->onDelete('cascade');

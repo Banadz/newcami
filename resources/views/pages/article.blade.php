@@ -1,6 +1,6 @@
 @extends('pages.layout.pagesLayout')
     @section('title')
-        CAMI | Categorie - Liste
+        CAMI | Article - Liste
     @endsection
     @section('entete')
         <div class="page-header">

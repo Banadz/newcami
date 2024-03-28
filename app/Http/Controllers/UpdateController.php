@@ -13,6 +13,7 @@ use App\Models\Materiel;
 use App\Models\Sortie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller
 {
@@ -76,6 +77,44 @@ class UpdateController extends Controller
             'success' => true,
             'agent' => $matricule
         ]);
+
+    }
+
+    public function UpdateProfil(Request $request){
+        $matricule = $request->input('matricule');
+        $agent = Agent::where('MATRICULE', $matricule)->first();
+
+        $agent->TELEPHONE = $request->input('telephone');
+        $agent->EMAIL = $request->input('email');
+        $agent->PASSWORD = $request->input('password');
+        $agent->save();
+
+        return response()->json([
+            'success' => true,
+            'agent' => $matricule
+        ]);
+
+    }
+
+    public function Profil(Request $request){
+        // $user = Auth::user();
+        // $matricule = $user->MATRICULE;
+
+        // $agent = Agent::where('MATRICULE', $matricule)->first();
+
+        // $agent->NOM = $request->input('nomP');
+        // $agent->PRENOM = $request->input('prenomP');
+        // $agent->GENRE = $request->input('genreP');
+        // $agent->ADRESSE_PHYSIQUE = $request->input('adresseP');
+        // $agent->PSEUDO = $request->input('title');
+
+        // // $agent->save();
+
+        // return response()->json([
+        //     'success' => true,
+        //     'agent' => $matricule
+        // ]);
+        dump($request->input('title'));
 
     }
 

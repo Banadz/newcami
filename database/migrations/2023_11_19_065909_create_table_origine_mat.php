@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('PRIX');
             $table->integer('MONTANT');
             $table->string('ORIGINE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
 
             $table->foreign('ORIGINE')->references('CODE_SERVICE')->on('SERVICE')->onDelete('cascade');

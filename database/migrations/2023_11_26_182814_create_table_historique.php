@@ -19,6 +19,7 @@ return new class extends Migration
 
             $table->dateTime('DATE_DEB')->nullable(false);
             $table->dateTime('DATE_FIN')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->foreignId('id_materiel')->references('id')->on('MATERIEL')->onDelete('cascade');
             $table->foreign('MATRICULE')->references('MATRICULE')->on('AGENT')->onDelete('cascade');

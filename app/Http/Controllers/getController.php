@@ -189,11 +189,15 @@ class getController extends Controller
     }
 
     public function GroupDemande(Request $request){
+        $user = Auth::user();
+        $type = $user->TYPE;
+
         $ref = $request->input('ref');
         $demandes = Demande::with('article')->where('REF_DEMANDE', '=', $ref)->get();
         return response()->json([
             'success' => true,
-            'demandes' => $demandes
+            'demandes' => $demandes,
+            'user' => $type
         ]);
     }
 

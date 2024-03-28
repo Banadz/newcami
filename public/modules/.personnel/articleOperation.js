@@ -11,16 +11,16 @@ $(document).ready(function(){
         "scrollCollapse": true,
         "paging": true
     });
-    fichierArticle.row.add([
-        '49',
-        'Brosse pour lavage carreaux',
-        'Lave pont avec manche (A8F)',
-        'Nombre',
-        `<div class="table-actions">
-            <a href="#" class="multiArticleUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
-            <a href="#" class="multiArticleDelete" title="Supprimer"><i class="ik ik-trash-2"></i></a>
-        </div>`
-    ]).draw();
+    // fichierArticle.row.add([
+    //     '49',
+    //     'Brosse pour lavage carreaux',
+    //     'Lave pont avec manche (A8F)',
+    //     'Nombre',
+    //     `<div class="table-actions">
+    //         <a href="#" class="multiArticleUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
+    //         <a href="#" class="multiArticleDelete" title="Supprimer"><i class="ik ik-trash-2"></i></a>
+    //     </div>`
+    // ]).draw();
     // INSERTION..
 
     $('#compte').on('change' , function(){
@@ -233,9 +233,9 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     if(response.success){
-                        console.log(response)
+                        // console.log(response)
                         alert(`success! `+ response.eff + ` Article(s) inséré(s)` );
-                        // window.location.reload()
+                        window.location.reload()
                     }else{
                         console.log('ERROR')
                     }

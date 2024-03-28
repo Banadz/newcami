@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('FACTURE')->nullable(true);
             $table->string('PRIX_TOTAL')->nullable(true);;
             $table->dateTime('DATE_ORIGINE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
 
             $table->foreign('CODE_SERVICE')->references('CODE_SERVICE')->on('SERVICE')->onDelete('cascade');

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InsertionController extends Controller
 {
@@ -94,12 +95,15 @@ class InsertionController extends Controller
             $article = new Article();
             $article->id_categorie = $articless[0];
             $article->DESIGNATION = $articless[1];
-            $article->SPECIFICATION = $articless[2];
+            if(isset($articless[2])){
+                $article->SPECIFICATION = $articless[2];
+            }
             $article->UNITE = $articless[3];
             $article->EFFECTIF = 0;
             $article->DISPONIBLE = true;
             $article->CODE_SERVICE = $code_service;
             $article->save();
+            // dump($article);
             $eff = $eff + 1;
         }
         return response()->json([
@@ -211,33 +215,78 @@ class InsertionController extends Controller
             'success' => true,
             'ref' => $ref
         ]);
-    }
+    }//vita
     public function validerDem(Request $request){
         $data = $request->input('donnees');
         $donnees = json_decode($data, true);
         $reference = $request->input('reference');
-        foreach ($donnees as $ligne) {
-            $demande = Demande::where('id', $ligne[0])->get();
-            if ($ligne[3] = 0){
 
-                $demande->ETAT_DEMANDE = "Réfusé";
-            }elseif($ligne[3] != 0){
-                $demande->ETAT_DEMANDE = "En attente de livraison";
-            }else{
-                abort(404);
-            }
-            // $demande->save();
-            $id_article = $demande->id_article;
-            $article = Article::where('id', $id_article)->get();
-            $stock = $article->EFFECTIF;
-            $article->EFFECTIF = $stock - $ligne[3];
-
-            // $article->save();
-        }
         $de = Demande::where('id', $donnees[0][0])->first();
-        $ref_demande = Reference::where('REFERENCE', $de->REF_DEMANDE);
+        $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
         $ref_demande->ETAT = 'En attente de livraison';
+        $ref_demande->save();
+
+        foreach ($donnees as $ligne) {
+            $demande = Demande::with('article')->where('id', $ligne[0])->first();
+            if ($ligne[4] == 0){
+                $demande->ETAT_DEMANDE = "Réfusé";
+            }else{
+                if($ligne[4] != 0){
+                    $demande->ETAT_DEMANDE = "En attente de livraison";
+                }else{
+                    abort(404);
+                }
+            }
+            $demande->QUANTITE_ACC = $ligne[4];
+            $demande->save();
+
+            $stock = $demande->article->EFFECTIF;
+            $demande->article->EFFECTIF = $stock - $ligne[4];
+            $demande->article->save();
+        }
+        return response()->json([
+            'success' => true,
+            'ref' => $reference
+        ]);
+    }
+
+    public function refuserDem(Request $request){
+        $data = $request->input('donnees');
+        $donnees = json_decode($data, true);
+        $reference = $request->input('reference');
+
+        $de = Demande::where('id', $donnees[0][0])->first();
+        $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
+        $ref_demande->ETAT = 'Refusé';
         // $ref_demande->save();
+
+        foreach ($donnees as $ligne) {
+            $demande = Demande::with('article')->where('id', $ligne[0])->first();
+            $demande->ETAT_DEMANDE = "Refusé";
+            $demande->save();
+        }
+        return response()->json([
+            'success' => true,
+            'ref' => $reference
+        ]);
+    }
+
+    public function confirmerDem(Request $request){
+        $data = $request->input('donnees');
+        $donnees = json_decode($data, true);
+        $reference = $request->input('reference');
+
+        foreach ($donnees as $ligne) {
+            $demande = Demande::with('article')->where('id', $ligne[0])->first();
+            $demande->QUANTITE_LIV = $ligne[5];
+            $demande->ETAT_DEMANDE = 'Livré';
+            $demande->save();
+        }
+
+        $de = Demande::where('id', $donnees[0][0])->first();
+        $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
+        $ref_demande->ETAT = 'Livré';
+        $ref_demande->save();
 
         return response()->json([
             'success' => true,

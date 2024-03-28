@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('LABEL_CATEGORIE')->nullable(false);
             $table->integer('COMPTE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
 
             $table->foreign('COMPTE')->references('COMPTE')->on('COMPTE')->onDelete('cascade');

@@ -30,7 +30,7 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="form-group">
-                                                    <h6 id="ref_dem" title="">Reference</h6>
+                                                    <h6 id="ref_dem" title="ref">Reference</h6>
                                                 </div>
                                             </div>
 
@@ -46,7 +46,9 @@
                                                 <th>Article</th>
                                                 <th>Stock</th>
                                                 <th>Qté demandé</th>
+                                                @if (Auth::user()->TYPE == "Admin")
                                                 <th>Qté accordé</th>
+                                                @endif
                                                 <th>Unité</th>
                                             </tr>
                                             </thead>
@@ -59,9 +61,12 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('imprimerDemande') }}" class="btn btn-success">Imprimer</a>
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                            <button type="button" id="refuseDem" class="btn btn-warning">Refuser</button>
+                            <a href="{{ route('imprimerDemande') }}" id="impressBtn" class="btn btn-success">Imprimer</a>
+
+                            @if (Auth::user()->TYPE == "Admin")
+                                <button type="submit" class="btn btn-primary">Valider</button>
+                                <button type="button" target="{{ route('refuseDemande') }}" id="refuseDem" class="btn btn-warning">Refuser</button>
+                            @endif
                         </div>
                     </div>
                 </form>
