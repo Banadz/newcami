@@ -12,37 +12,23 @@ use RealRashid\SweetAlert\Facades\Alert;
 class LoginController extends Controller
 {
     public function tologin(LoginRequest $request){
+
         $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('dashbord'));
+
+            return response()->json([
+                'success' => true,
+            ]);
+            // return redirect()->intended(route('dashbord'));
         } else {
-            Alert::toast('Echèc d\'authentification !', 'error')
-            ->position('center-center') // Position de l'alerte
-            ->autoClose(5000) // Fermer automatiquement après 3 secondes
-            ->background('#3085d6') // Couleur d'arrière-plan de l'alerte
-            ->textColor('#ffffff');
-            // Alert::error('', 'Echèc d\'authentification');
-            return redirect()->route('seConnecter');
+            return response()->json([
+                'error' => true,
+                'alert' => "Aucun compte correspondant trouvé"
+            ]);
+        //     // return redirect()->route('seConnecter');
         }
-        // if(Auth::attempt($credentials)){
-        //     $request->session()->regenerate();
-        //     return redirect()->intended(route('dashbord'));
-        // }
-        // Alert::success('Succès', 'Aucun identifiant correspondant');
-        // $users = DB::table('AGENT')->where('MATRICULE', $credentials['MATRICULE']);
-        // if (! $users = 1 ){
-
-
-            // return to_route('seConnecter')->withErrors([
-            //     'MATRICULE' => "Aucun identifiant correspondant"
-            // ])->onlyInput('MATRICULE');
-        // }
-        // return to_route('seConnecter')->withErrors([
-        //     'password' => "Mot de passe incorrect"
-        // ])->onlyInput('MATRICULE');
-        // var_dump($users);
     }
 
     public function tologout(){

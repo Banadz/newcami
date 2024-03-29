@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AgentImport;
 use App\Imports\ArticleImport;
+use App\Models\Reference;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 
 class ImportController extends Controller
 {
@@ -58,11 +61,28 @@ class ImportController extends Controller
 
     public function ImpressionDemande(Request $request)
     {
-        // $pdf = App::make('dompdf.wrapper');
+        $data = $request->input('donnees');
+        $donnees = json_decode($data, true);
+        $reference = $request->input('reference');
+        $newref = json_decode($reference);
+
+        $ref_dem = Reference::with('agent.division.service', 'demandes.article')
+        ->where('REFERENCE', $newref)
+        ->first();
+
+        // foreach ($ref_dem as $dd) {
+            $carbonDateDEB = Carbon::parse($ref_dem->DATE_DEMANDE);
+            $ref_dem->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY');
+        // }
+
+        $pdf = App::make('dompdf.wrapper');
         // $pdf->loadHTML('<h1>Je vois ta gloire</h1>');
         // return $pdf->download('bon_de_commande.pdf');
 
-        $pdf = pdf::loadView('pages.pdf.bonDeCommande');
+        $pdf = pdf::loadView('pages.pdf.bonDeCommande', [
+            'donnees' => $donnees,
+            'reference' => $ref_dem
+        ]);
         return $pdf->stream('bon_de_commande.pdf');
     }
 

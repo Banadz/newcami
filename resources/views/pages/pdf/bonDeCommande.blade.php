@@ -106,11 +106,11 @@
                                 <div class="page-header-title">
                                     <div class="Entete">
                                         <p style="text-align: center; line-height: 10px;">
-                                            MINISTERE DE L'ECONOMIE ET DES FINCNACES<br>
-                                            SECRETARIAT GENERAL<br>
-                                            DIRECTION GENERALE DU BUDGET ET DES FINANCES<br>
-                                            DIRECTION DE LA SOLDE ET PENSIONS<br>
-                                            Services Régional de la Solde et Des Pensions Haute Matsiatra
+                                            {{ $reference->agent->division->service->ENTETE1 }}<br>
+                                            {{ $reference->agent->division->service->ENTETE2 }}<br>
+                                            {{ $reference->agent->division->service->ENTETE3 }}<br>
+                                            {{ $reference->agent->division->service->ENTETE4 }}<br>
+                                            {{ $reference->agent->division->service->ENTETE5 }}<br>
                                         </p>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@
                             <div class="col-lg-4">
                                 <div class="Entete2">
                                     <p style="text-align: center;">
-                                        Fianarantsoa, le 05 Décembre 2024.
+                                        {{ $reference->agent->division->service->VILLE_SERVICE }}, le {{ $reference->DATE_DEMANDE }}.
                                     </p>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                         <div class="col-md-12">
                             <p style="text-align: center;"> <strong>BON de COMMANDE</strong></p>
                             <p style="line-height: 10px;">
-                                <strong style="text-decoration: underline">Structure</strong> : Cellule d'Appui et de Coordination (C.A.C)
+                                <strong style="text-decoration: underline">Structure</strong> : {{$reference->agent->division->LABEL_DIVISION}} ({{$reference->agent->division->CODE_DIVISION}})
                             </p>
                         </div>
 
@@ -154,88 +154,24 @@
                                     </tr>
                                 </thead>
                                 <tbody class="tboded">
+                                    @php
+                                        $i = 1
+                                    @endphp
+                                    @foreach ( $reference->demandes as $demande)
                                     <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
+                                        <td class="cellbordure" style= "width=10%;">{{$i}}</td>
+                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">{{$demande->article->DESIGNATION}} {{$demande->article->SPECIFICATION}}</td>
+                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">{{$demande->article->EFFECTIF}}</td>
+                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">{{$demande->article->UNITE}}</td>
+                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE}}</td>
+                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_ACC}}</td>
+                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;"></td>
                                     </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">Cahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
-                                    <tr class="tred">
-                                        <td class="cellbordure" style= "width=10%;">1</td>
-                                        <td class="cellbordure" style= "width=60%;" style="text-align:center;">
-                                            kkkkkkkkkkkkk kkkkkkkkkkkkkkkkkkkkkk kkkkkkkkkkkkkkkkkkkk kkkkkkkkkkkkkkkkk kkkkkkkkkkkkCahier 100 pages petit format Cahier 100 pages petit format</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">10</td>
-                                        <td class="cellbordure" style= "width=18%;" style="text-align:center;">Nombre</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">2</td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                        <td class="cellbordure" style= "width=20%;" style="text-align:center;"></td>
-                                    </tr>
+                                    @php
+                                        $i= $i+1
+                                    @endphp
+
+                                    @endforeach
                                 </tbody>
                             </table>
                             <!-- Language - Comma Decimal Place table end -->

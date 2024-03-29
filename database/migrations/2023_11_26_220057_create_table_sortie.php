@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('REF_SORTIE')->nullable(false)->unique();
             $table->string('OBJET')->nullable(false);
             $table->string('STATUT')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->dateTime('DATE')->nullable(false);
             $table->foreignId('id_materiel')->references('id')->on('MATERIEL')->onDelete('cascade');

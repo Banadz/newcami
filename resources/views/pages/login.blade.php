@@ -8,6 +8,9 @@
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="home" content="{{ route('dashbord') }}">
+
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
@@ -22,6 +25,8 @@
     </head>
 
     <body>
+
+    @includeFirst(['pages.loader.preloader'])
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -40,80 +45,16 @@
                                 <a href="#"><img src="images/auth/CAMI1@300x.png" alt="logo" width="100%"></a>
                             </div>
                             <p>Authentification</p>
-                            <form action="tologin" method="POST" class="loginForm">
+                            <form action="tologin" id="login_Form" method="POST" class="loginForm">
                                 @csrf
                                 <div class="form-group">
                                     <input type="text" class="form-control"  placeholder="Matricule" name="MATRICULE" id="MATRICULE" maxlength="6">
                                     <i class="ik ik-user"></i>
-                                        {{-- @error('MATRICULE')
-
-                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-
-                                                <strong>Echèc!</strong> {{ $message }}
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <i class="ik ik-x"></i>
-                                                    </button>
-                                            </div>
-                                        @enderror --}}
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control" placeholder="***********" name="password" id="password"  maxlength="12">
                                     <i class="ik ik-lock"></i>
-                                    {{-- @error('password')
-
-                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-
-                                            <strong>Echèc!</strong> {{ $message }}
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                    <i class="ik ik-x"></i>
-                                                </button>
-                                        </div>
-                                    @enderror --}}
                                 </div>
-                                @include('sweetalert::alert')
-                                @if ($errors->any())
-                                    {{-- <div class="modal show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                ...
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    {{-- <script>
-                                        $(document).ready(function (){
-                                            swal("Echéc", "Je t'aime", {
-                                                icon : "error",
-                                                buttons:false
-                                            });
-                                            setTimeout(function(){
-                                                swal.close();
-
-                                            }, 3000);
-                                        });
-                                    </script> --}}
-                                    <script>
-                                        $(document).ready(function(){
-                                            alert('Echec d\'Authentification');
-                                        })
-                                    </script>
-                                    {{-- <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{  $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div> --}}
-                                @endif
                                 <div class="row">
                                     <div class="col text-left">
                                         <label class="custom-control custom-checkbox">
@@ -157,6 +98,8 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
+        <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
+        <script src="modules/.personnel/LoginOperation.js"></script>
 
 
     </body>

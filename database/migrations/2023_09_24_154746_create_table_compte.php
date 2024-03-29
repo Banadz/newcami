@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('COMPTE', function (Blueprint $table) {
             $table->integer('COMPTE')->primary();
             $table->string('LABEL_COMPTE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
         });
     }

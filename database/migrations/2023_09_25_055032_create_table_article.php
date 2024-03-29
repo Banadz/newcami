@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('ARTICLE', function (Blueprint $table) {
             $table->id();
             $table->string('DESIGNATION')->nullable(false);
-            $table->string('SPECIFICATION');
+            $table->string('SPECIFICATION')->nullable(true);
             $table->string('UNITE')->nullable(false);
             $table->integer('EFFECTIF')->nullable(false);
             $table->boolean('DISPONIBLE');
             $table->string('CODE_SERVICE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->foreign('CODE_SERVICE')->references('CODE_SERVICE')->on('SERVICE')->onDelete('cascade');
             $table->foreignId('id_categorie')->references('id')->on('CATEGORIE')->onDelete('cascade');

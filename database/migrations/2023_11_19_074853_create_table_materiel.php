@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('DATE_DEB');
             $table->integer('MATRICULE')->nullable(true);
             $table->string('CODE_SERVICE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->foreignId('id_nomenclature')->references('id')->on('NOMENCLATURE')->onDelete('cascade');
             $table->foreignId('id_categorie')->references('id')->on('CATEGORIE')->onDelete('cascade');

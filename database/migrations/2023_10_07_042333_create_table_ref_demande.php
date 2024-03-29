@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('VALIDATION')->nullable(true);
             $table->dateTime('LIVRAISON')->nullable(true);
             $table->string('CODE_SERVICE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->timestamps();
 

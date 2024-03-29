@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('NOMENCLATURE')->nullable(false);
             $table->string('DETAIL_NOM')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
         });
     }

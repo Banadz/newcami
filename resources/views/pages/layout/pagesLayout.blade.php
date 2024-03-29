@@ -11,12 +11,18 @@
         <meta name="getServices" content="{{ route('allService') }}">
         <meta name="getDivisions" content="{{ route('allDivision') }}">
         <meta name="getAgents" content="{{ route('allAgent') }}">
+        <meta name="controlQual-route" content="{{ route('controlQuant') }}">
+        <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
+
+
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
 
         @yield('secialCss')
+
+        <link rel="stylesheet" href="modules/.personnel/css/vibreur.css">
         <link rel="stylesheet" href="modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="modules/summernote/dist/summernote-bs4.css">
         <link rel="stylesheet" href="modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
@@ -32,13 +38,12 @@
         <link rel="stylesheet" href="modules/icon-kit/dist/css/iconkit.min.css">
         <link rel="stylesheet" href="modules/perfect-scrollbar/css/perfect-scrollbar.css">
         <link rel="stylesheet" href="dist/css/theme.min.css">
-        <script src="src/js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
-
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        {{-- PRELOADER --}}
 
         <div class="wrapper">
             {{-- HEADER --}}
@@ -84,8 +89,7 @@
         {{-- MY JS --}}
 
         {{-- <script src="modules/.personnel/Register.js"></script> --}}
-        {{-- <script src="modules/.personnel/articleOperation.js"></script> --}}
-
+        <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         @yield('specialScript')
     </body>
 </html>

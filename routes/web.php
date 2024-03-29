@@ -62,9 +62,11 @@ Route::middleware([
 
     Route::get('/demande', [PageController::class, 'pageDemande'])->name('demande');
     Route::get('/livringDemande', [PageController::class, 'pagedemandeLivring'])->name('livringDemande');
+    Route::get('/LivredDemande', [PageController::class, 'pagedemandeLivred'])->name('LivredDemande');
 
 
     Route::get('/materiel', [PageController::class, 'pageMateriel'])->name('materiel');
+    Route::get('/profil', [PageController::class, 'userProfil'])->name('profil');
 
     //  FORMULAIRE:
     Route::get('/newService', function () {return view('pages/serviceInsertion');})->name('newService');
@@ -141,6 +143,8 @@ Route::middleware([
 
     Route::post('/valideDemande', [InsertionController::class, 'Demande'])->name('valideDemande');
     Route::post('/validationDemande', [InsertionController::class, 'validerDem'])->name('validationDemande');
+    Route::post('/refuseDemande', [InsertionController::class, 'refuserDem'])->name('refuseDemande');
+    Route::post('/confirmationDemande', [InsertionController::class, 'confirmerDem'])->name('confirmationDemande');
     Route::post('/validOrigine', [InsertionController::class, 'Origine'])->name('validOrigine');
     Route::post('/valideMateriel', [InsertionController::class, 'Materiel'])->name('valideMateriel');
 
@@ -166,6 +170,9 @@ Route::middleware([
 
     Route::get('/imprimerDemande', [ImportController::class, 'ImpressionDemande'])->name('imprimerDemande');
     Route::get('/imprimerStock', [ImportController::class, 'ImpressionStock'])->name('imprimerStock');
+
+    Route::post('/updateUserProfilBase', [UpdateController::class, 'Profil'])->name('updateUserProfilBase');
+    Route::post('/updateUserProfilParam', [UpdateController::class, 'UpdateProfil'])->name('updateUserProfilParam');
     // Route::post('/putinPanier', [getController::class, 'Article'])->name('putinPanier');
 
     // Route::get('/dashboard', function () {

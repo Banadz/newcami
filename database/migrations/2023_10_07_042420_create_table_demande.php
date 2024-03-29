@@ -16,11 +16,14 @@ return new class extends Migration
             $table->string('REF_DEMANDE')->nullable(false);
             $table->foreignId('id_article')->references('id')->on('ARTICLE')->onDelete('cascade');
             $table->integer('QUANTITE')->nullable(false);
+            $table->integer('QUANTITE_ACC')->nullable(true);
+            $table->integer('QUANTITE_LIV')->nullable(true);
             $table->integer('STOCK');
             $table->string('UNITE');
             $table->string('ETAT_DEMANDE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
-            
+
             $table->foreign('REF_DEMANDE')->references('REFERENCE')->on('REF_DEMANDE')->onDelete('cascade');
         });
     }

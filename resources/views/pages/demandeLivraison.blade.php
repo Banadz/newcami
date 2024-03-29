@@ -48,7 +48,7 @@
                                         <a class="nav-link" href="demande">En attente de validation</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link  active" href="livringDemande">En attente de livarison</a>
+                                        <a class="nav-link active" href="livringDemande">En attente de livarison</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="LivredDemande">Livré(s)</a>
@@ -84,15 +84,11 @@
                                             <td>{{ $reference->agent->MATRICULE }} | {{ $reference->agent->PRENOM }}</td>
                                             <td>{{ $reference->agent->FONCTION }} | {{ $reference->agent->division->CODE_DIVISION }}</td>
                                             <td>{{ $reference->DATE_DEMANDE }}</td>
-                                            <td>2 demande(s)</td>
+                                            <td>{{ $reference->demandes_count }} demande(s)</td>
                                             <td>
-                                                @if (Auth::user()->TYPE == "User")
-                                                    {{ $reference->ETAT }}
-                                                @else
-                                                    <div class="table-actions">
-                                                        <a href="{{ route('sameRefDemande') }}" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
-                                                    </div>
-                                                @endif
+                                                <div class="table-actions">
+                                                    <a href="{{ route('sameRefDemande') }}" class="detail" data-toggle="modal" data-target="#demandeConfirm" title="Details"><i class="ik ik-info"></i></a>
+                                                </div>
                                             </td>
 
 
@@ -112,7 +108,7 @@
 
     @section('updateModal')
         {{-- Update Modals --}}
-        @include('pages.modals.demandeInfo')
+        @include('pages.modals.demandeConfirm')
     @endsection
 
     @section('specialScript')

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('PASSWORD')->nullable(false);
             $table->string('ADRESSE_PHYSIQUE');
             $table->string('TELEPHONE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
             $table->timestamps();
 
 

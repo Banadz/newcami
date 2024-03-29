@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('MONTANT');
             $table->string('UNITE');
             $table->string('ORIGINE')->nullable(false);
+            $table->boolean('ACTIVED')->default(true)->nullable(false);
 
             $table->timestamps();
 

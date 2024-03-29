@@ -32,6 +32,7 @@
     @endsection
 
     @section('content')
+        @include('sweetalert::alert')
 
         <div class="row">
             <div class="col-sm-12">
@@ -86,19 +87,11 @@
                                             <td>{{ $reference->DATE_DEMANDE }}</td>
                                             <td>{{ $reference->demandes_count }} demande(s)</td>
                                             <td>
-                                                @if (Auth::user()->TYPE == "User")
-                                                    {{ $reference->ETAT }}
-                                                @else
-                                                    <div class="table-actions">
-                                                        <a href="{{ route('sameRefDemande') }}" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
-                                                    </div>
-                                                @endif
+                                                <div class="table-actions">
+                                                    <a href="{{ route('sameRefDemande') }}" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
+                                                </div>
                                             </td>
-
-
-
                                         </tr>
-
                                     @endforeach
                             </tbody>
                             </table>
