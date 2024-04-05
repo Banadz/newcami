@@ -18,7 +18,6 @@ $(document).ready(function(){
         "columnDefs": [
             {
                 "targets": 5, // Indice de la 4ème colonne (commençant à zéro)
-                "targets": 5, // Indice de la 4ème colonne (commençant à zéro)
                 "render": function(data, type, row) {
                 return '<div contenteditable="true">' + data + '</div>';
                 }
@@ -26,13 +25,9 @@ $(document).ready(function(){
         ],
         "lengthMenu":[3, 10, 20, 50, 100],
         "pageLength":3,
-        ],
-        "lengthMenu":[3, 10, 20, 50, 100],
-        "pageLength":3,
     });
 
     $('#demandeW').DataTable()
-    $('#demandeL').DataTable()
     $('#demandeL').DataTable()
     // INSERTION..
 
@@ -144,8 +139,6 @@ $(document).ready(function(){
         $('#defaultCat').remove()
         const id_categorie = $("#id_categorie option:selected").val();
         const url = $(this).attr('target')
-        const id_categorie = $("#id_categorie option:selected").val();
-        const url = $(this).attr('target')
 
         $.ajax({
             url:url,
@@ -195,70 +188,14 @@ $(document).ready(function(){
         class="form-control kwantite" id="quantite" placeholder="Effectif" required>`
 
         $("#spaceQuant").html(quantite)
-        const id_article = $("#article option:selected").val()
-
-        var quantite = `<label for="quantite">Quantité</label>
-        <input type="number" name=`+id_article+` target=`+controlQual+`
-        class="form-control kwantite" id="quantite" placeholder="Effectif" required>`
-
-        $("#spaceQuant").html(quantite)
         $("#unite").val('');
         $('#defaultArt').remove()
     })
     // QUANTITE CONTROL...........
     $('body').on('input', '.kwantite' , function(ko){
-    $('body').on('input', '.kwantite' , function(ko){
         ko.preventDefault()
         const objectif = $(this)
-        const objectif = $(this)
         var url = $(this).attr('target')
-        var article = objectif.attr('name')
-        ControlQant(article, url, objectif)
-        // $.ajax({
-        //     type:'POST',
-        //     url: url,
-        //     data:{
-        //         _token:csrfToken,
-        //         article:article
-        //     },
-        //     success:function(response, statut){
-        //         // console.log(response)
-        //         if (response.success){
-        //             // $("#categorieUpdate").modal('show')
-        //             // $('#unite').val(response.article['0'].UNITE)
-        //             quant = objectif.val();
-        //             if (quant > response.article['0'].EFFECTIF){
-        //                 objectif.removeClass('is-valid');
-        //                 objectif.addClass('is-invalid');
-        //                 objectif.addClass('champs-invalide');
-
-        //             }else{
-        //                 objectif.removeClass('champs-invalide');
-        //                 objectif.removeClass('is-invalid');
-        //                 objectif.addClass('is-valid');
-        //             }
-
-        //         }else{
-        //             swal("Problème de connexion", "Veuillez réessayer plutard", {
-        //                 icon : "error",
-        //                 buttons: {
-        //                     confirm: {
-        //                         className : 'btn btn-danger'
-        //                     }
-        //                 },
-        //             }).then((Delete) => {
-        //                 if (Delete) {
-        //                     window.location.reload()
-        //                 }
-        //             })
-        //         }
-        //     }
-
-        // })
-    })
-
-    function ControlQant(cible, url, source){
-        const input = source.val();
         var article = objectif.attr('name')
         ControlQant(article, url, objectif)
         // $.ajax({
@@ -312,7 +249,6 @@ $(document).ready(function(){
             data:{
                 _token:csrfToken,
                 article:cible
-                article:cible
             },
             success:function(response, statut){
                 // console.log(response)
@@ -326,17 +262,7 @@ $(document).ready(function(){
                         source.addClass('is-invalid');
                         source.addClass('champs-invalide');
 
-
-                    const reference = response.article['0'].EFFECTIF
-                    if (input > reference){
-                        source.removeClass('is-valid');
-                        source.addClass('is-invalid');
-                        source.addClass('champs-invalide');
-
                     }else{
-                        source.removeClass('champs-invalide');
-                        source.removeClass('is-invalid');
-                        source.addClass('is-valid');
                         source.removeClass('champs-invalide');
                         source.removeClass('is-invalid');
                         source.addClass('is-valid');
@@ -362,46 +288,17 @@ $(document).ready(function(){
     }
 
     $('body').on('input', '.kwantite', function(){
-                    swal("Problème de connexion", "Veuillez réessayer plutard", {
-                        icon : "error",
-                        buttons: {
-                            confirm: {
-                                className : 'btn btn-danger'
-                            }
-                        },
-                    }).then((Delete) => {
-                        if (Delete) {
-                            window.location.reload()
-                        }
-                    })
-                }
-            }
-
-        })
-    }
-
-    $('body').on('input', '.kwantite', function(){
         var champs = $(this).val()
         var newValue = champs.replace(/\D/g, '')
         $(this).val(newValue)
     })
 
     $('body').on('focus', '#quantite' , function(ko){
-    $('body').on('focus', '#quantite' , function(ko){
         ko.preventDefault()
         var url = $(this).attr('target')
         var article = $("#article option:selected").val()
 
-
         if (article == 0){
-            swal("Attention", "Veuillez choisir un article d'abord", {
-                icon : "warning",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-warning'
-                    }
-                },
-            })
             swal("Attention", "Veuillez choisir un article d'abord", {
                 icon : "warning",
                 buttons: {
@@ -433,14 +330,6 @@ $(document).ready(function(){
                                 }
                             },
                         })
-                        swal("Problème de connection", `Impossible de se connecter au serveur à l’adresse `+window.location+`.`, {
-                            icon : "Echec",
-                            buttons: {
-                                confirm: {
-                                    className : 'btn btn-danger'
-                                }
-                            },
-                        })
                     }
                 }
 
@@ -459,23 +348,8 @@ $(document).ready(function(){
         "pageLength":3,
     });
 
-        "searching": true,
-        "lengthMenu":[3, 10, 20, 50, 100],
-        "pageLength":3,
-    });
-
     $(formulaire).on('submit', function(pre){
         pre.preventDefault()
-        if ($('#quantite').hasClass('is-invalid')) {
-            swal('Echèc', `La quantité requise est en excée`,{
-                icon : "error",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-danger'
-                    }
-                },
-            })
-        } else {
         if ($('#quantite').hasClass('is-invalid')) {
             swal('Echèc', `La quantité requise est en excée`,{
                 icon : "error",
@@ -489,7 +363,6 @@ $(document).ready(function(){
             var id = $('#article option:selected').val();
             var designation = $('#article option:selected').attr('title');
             var specification = $('#article option:selected').attr('data-target');
-            // var quantite = $('#quantite').val();
             // var quantite = $('#quantite').val();
             var unite = $('#unite').val();
             var quantite = `<input type="number" name=`+id+` target=`+controlQual+` class="form-control editableQte kwantite kotrokotro" value="`+$('#quantite').val()+`">`
@@ -531,19 +404,8 @@ $(document).ready(function(){
                 },
             })
         }
-            swal("Information", ` Un article aujouté au bon de commande!
-            Actuellement: `+nombreDeLignes+` article(s).`, {
-                icon : "info",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-info'
-                    }
-                },
-            })
-        }
 
     })
-
 
 
     // TRASH IN THE LIST
@@ -583,57 +445,10 @@ $(document).ready(function(){
         //     var newValue = $(this).text();
         //     $('#alt-pg-dt').DataTable().cell(this).data(newValue).draw()
         // });
-        swal("Confirmation", ` Voulez-vous vraiment enlever cet article du bon de commande en cours?`, {
-            icon : "warning",
-            buttons: {
-                cancel: {
-                    visible: true,
-                    text:'Annuler',
-                    className: 'btn btn-success'
-                },
-                confirm: {
-                    text : 'Oui',
-                    className : 'btn btn-warning'
-                }
-
-            },
-        }).then((Delete) => {
-            if (Delete) {
-                const row = tableau.row($(this).parents('tr'));
-                row.remove().draw();
-                var nombreDeLignes = $('#alt-pg-dt').DataTable().rows().count();
-                $('#voirDem').html(`Voir demande<span class="badge bg-primary">`+nombreDeLignes+`</span>`)
-                if (1 > nombreDeLignes){
-                    $('#pannier').modal('toggle')
-                    $('#voirDem').html(`Voir demande`)
-                }
-            }else {
-                swal.close();
-            }
-        });
-    });
-        // écouter les modifications par rapport à la dataTable
-        // $('#alt-pg-dt').DataTable().on('keyup', 'td', function(e) {
-        //     var columnIndex = $('#alt-pg-dt').DataTable().cell(this).index().column;
-        //     var newValue = $(this).text();
-        //     $('#alt-pg-dt').DataTable().cell(this).data(newValue).draw()
-        // });
 
     // POST....
     $("#toValide").on('submit', function(ko){
         ko.preventDefault()
-        if ($('.kotrokotro').hasClass('is-invalid')) {
-            swal('Echèc', `La quantité requise est en excée`,{
-                icon : "error",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-danger'
-                    }
-                },
-            })
-        }else{
-            // alert('mialamigny')
-            const donnees = $('#alt-pg-dt').DataTable().rows().data().toArray();
         if ($('.kotrokotro').hasClass('is-invalid')) {
             swal('Echèc', `La quantité requise est en excée`,{
                 icon : "error",
@@ -745,7 +560,6 @@ $(document).ready(function(){
                 // console.log(response)
                 if (response.success){
                     $('#ref_dem').html(`Réference: `+ref)
-                    $('#ref_dem').attr('title', ref)
                     $('#ref_dem').attr('title', ref)
                     infoTable.clear().draw();
                     $.each(response.demandes, function(i,v){

@@ -35,7 +35,6 @@
 
 
 
-
         <link rel="stylesheet" href="modules/owl.carousel/dist/assets/owl.carousel.css">
         <link rel="stylesheet" href="modules/owl.carousel/dist/assets/owl.theme.default.css">
 
@@ -45,10 +44,6 @@
         <link rel="stylesheet" href="modules/icon-kit/dist/css/iconkit.min.css">
         <link rel="stylesheet" href="modules/perfect-scrollbar/css/perfect-scrollbar.css">
         <link rel="stylesheet" href="dist/css/theme.min.css">
-        {{-- <script src="src/js/vendor/modernizr-2.8.3.min.js"></script> --}}
-        {{-- <script src="modules/sweetalert/sweetalert.min.js"></script> --}}
-
-
         {{-- <script src="src/js/vendor/modernizr-2.8.3.min.js"></script> --}}
         {{-- <script src="modules/sweetalert/sweetalert.min.js"></script> --}}
 
@@ -164,10 +159,7 @@
                                                     <div class="row">
                                                         <div class="col-sm-12">
                                                             <div class="form-group" id="spaceQuant">
-                                                            <div class="form-group" id="spaceQuant">
                                                                 <label for="quantite">Quantité</label>
-                                                                <input type="Number" target="{{route('controlQuant')}}" class="form-control kwantite"
-                                                                name="" id="quantite" placeholder="Effectif" required>
                                                                 <input type="Number" target="{{route('controlQuant')}}" class="form-control kwantite"
                                                                 name="" id="quantite" placeholder="Effectif" required>
                                                             </div>
@@ -289,7 +281,6 @@
 
         {{-- MY JS --}}
 
-        <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         <script src="modules/.personnel/demandeOperation.js"></script>
     </body>

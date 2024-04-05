@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class InsertionController extends Controller
 {
@@ -226,7 +225,6 @@ class InsertionController extends Controller
             'success' => true,
             'ref' => $ref
         ]);
-    }//vita
     }//vita
     public function validerDem(Request $request){
         $data = $request->input('donnees');

@@ -40,22 +40,6 @@ $(document).ready(function(){
     //     'Andrainjato, Fianarantsoa',
     //     '04'
     // ]).draw();
-    // fichierAgent.row.add([
-    //     '157849',
-    //     'XBANAZ',
-    //     'Jefferson',
-    //     'M',
-    //     'BAG',
-    //     'Sécretaire',
-    //     'xbanadz@gmail.com',
-    //     '034781523',
-    //     `<div class="table-actions">
-    //         <a href="#" class="multiAgentUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
-    //         <a href="#" class="multiAgentDelete" title="Supprimer"><i class="ik ik-trash-2"></i></a>
-    //     </div>`,
-    //     'Andrainjato, Fianarantsoa',
-    //     '04'
-    // ]).draw();
 
     fichierAgent.column(9).visible(false)
     fichierAgent.column(10).visible(false)
@@ -357,29 +341,6 @@ $(document).ready(function(){
             });
             // console.log(multiAgent)
         }
-    })
-
-    // PROFIL............
-    $('#infoProfBase').on('submit', function(def){
-        def.preventDefault()
-        var infoBase = $(this).serialize()
-        url = $(this).attr('action')
-        alert(url)
-        $.ajax({
-            type:'POST',
-            url: url,
-            data:
-                infoBase,
-            success:function(response, statut){
-                console.log(response)
-                if (response.success){
-                    alert("données de l'agent " + response.agent + "modifiée" )
-                    // window.location.reload();
-                }else{
-                    console.log(response)
-                }
-            }
-        })
     })
 
     // PROFIL............
