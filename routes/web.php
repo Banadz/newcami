@@ -50,7 +50,7 @@ Route::middleware([
 ])->group(function () {
 
 
-    Route::get('/dashbord', function () {return view('pages/index');})->name('dashbord');
+    Route::get('/dashbord', [PageController::class, 'dashboard'])->name('dashbord');
 
     Route::get('/service', [PageController::class, 'pageService'])->name('service');
     Route::get('/division', [PageController::class, 'pageDivision'])->name('division');
@@ -63,6 +63,7 @@ Route::middleware([
     Route::get('/demande', [PageController::class, 'pageDemande'])->name('demande');
     Route::get('/livringDemande', [PageController::class, 'pagedemandeLivring'])->name('livringDemande');
     Route::get('/LivredDemande', [PageController::class, 'pagedemandeLivred'])->name('LivredDemande');
+    Route::get('/deniedDemande', [PageController::class, 'pagedemandeDenied'])->name('deniedDemande');
 
 
     Route::get('/materiel', [PageController::class, 'pageMateriel'])->name('materiel');

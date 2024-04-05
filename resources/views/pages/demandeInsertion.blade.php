@@ -7,9 +7,21 @@
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="getServices" content="{{ route('allService') }}">
+        <meta name="getDivisions" content="{{ route('allDivision') }}">
+        <meta name="getAgents" content="{{ route('allAgent') }}">
         <meta name="controlQual-route" content="{{ route('controlQuant') }}">
         <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
+        <meta name="user-info" content="{{ Auth::user(); }}">
+
+        {{-- DEMANDE URL --}}
+        <meta name="demande-livring" content="{{ route('livringDemande') }}">
+        <meta name="demande-new" content="{{ route('newDemande') }}">
+        <meta name="demande-waiting" content="{{ route('demande') }}">
+        <meta name="demande-denied" content="{{ route('deniedDemande') }}">
+        <meta name="demande-recieved" content="{{ route('LivredDemande') }}">
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 

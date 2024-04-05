@@ -40,105 +40,136 @@
             <div class="page-wrap">
                 {{-- SIDEBAR --}}
                 @include('pages.partition.sidebar')
+                <style>
+                    .homeAlone{
+                        background-image: url('images/Finance/comptabilité.jpg');
+                        background-size: cover;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
 
+                </style>
                 <div class="main-content">
                     <div class="container-fluid">
                         <div class="row clearfix">
-                            <div class="col-lg-2 col-md-6 col-sm-12">
-                                <div class="widget">
-                                    <div class="widget-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="state">
-                                                <h6>Nouveaux</h6>
-                                                <h2>50</h2>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <a href="{{ route('demande') }}">
+                                    <div class="widget">
+                                        <div class="widget-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="state">
+                                                    <h6>Nouveaux</h6>
+                                                    <h2>{{ $dashboard['NEW'] }}</h2>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ik ik ik-alert-circle"></i>
+                                                </div>
                                             </div>
-                                            <div class="icon">
-                                                <i class="ik ik-thumbs-up"></i>
-                                            </div>
+                                            <small class="text-small mt-10 d-block">Demande(s) en attente</small>
                                         </div>
-                                        <small class="text-small mt-10 d-block">Demande(s) en attente</small>
-                                    </div>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12">
-                                <div class="widget">
-                                    <div class="widget-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="state">
-                                                <h6>Réfusé</h6>
-                                                <h2>6</h2>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ik ik-award"></i>
-                                            </div>
+                                        <div class="progress progress-sm">
+                                            @if ($dashboard['ALL'] == 0)
+                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $dashboard['NEW'] }}" 
+                                                aria-valuemin="0" aria-valuemax="100" 
+                                                style="width: 0%;"></div>
+                                            @else
+                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $dashboard['NEW'] }}" 
+                                                aria-valuemin="0" aria-valuemax="{{ $dashboard['ALL'] }}" 
+                                                style="width: {{ ($dashboard['NEW'] / $dashboard['ALL']) * 100}}%;"></div>
+                                            @endif
                                         </div>
-                                        <small class="text-small mt-10 d-block">Nombre de demande réfusé</small>
                                     </div>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100" style="width: 6%;"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12">
-                                <div class="widget">
-                                    <div class="widget-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="state">
-                                                <h6>Validé</h6>
-                                                <h2>30</h2>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <a href="{{ route('livringDemande') }}">
+                                    <div class="widget">
+                                        <div class="widget-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="state">
+                                                    <h6>Livraison</h6>
+                                                    <h2>{{ $dashboard['LIVRING'] }}</h2>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ik ik-shopping-cart"></i>
+                                                </div>
                                             </div>
-                                            <div class="icon">
-                                                <i class="ik ik-message-square"></i>
-                                            </div>
+                                            <small class="text-small mt-10 d-block">En cours de livraison</small>
                                         </div>
-                                        <small class="text-small mt-10 d-block">Total de demande acordé</small>
-                                    </div>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12">
-                                <div class="widget">
-                                    <div class="widget-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="state">
-                                                <h6>Livaraison</h6>
-                                                <h2>4</h2>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ik ik-calendar"></i>
-                                            </div>
+                                        <div class="progress progress-sm">
+                                            @if ($dashboard['ALL'] == 0)
+                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] }}" 
+                                                aria-valuemin="0" aria-valuemax="100" 
+                                                style="width: 0%;"></div>
+                                            @else
+                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] }}" 
+                                                aria-valuemin="0" aria-valuemax="{{ $dashboard['ALL'] }}" 
+                                                style="width: {{ ($dashboard['LIVRING'] / $dashboard['ALL']) * 100}}%;"></div>
+                                            @endif
                                         </div>
-                                        <small class="text-small mt-10 d-block">En cours de livraison</small>
                                     </div>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="100" style="width: 4%;"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12">
-                                <div class="widget">
-                                    <div class="widget-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="state">
-                                                <h6>Reçu</h6>
-                                                <h2>10</h2>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <a href="{{ route('LivredDemande') }}">
+                                    <div class="widget">
+                                        <div class="widget-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="state">
+                                                    <h6>Reçu</h6>
+                                                    <h2>{{ $dashboard['LIVRED'] }}</h2>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ik ik-check-circle"></i>
+                                                </div>
                                             </div>
-                                            <div class="icon">
-                                                <i class="ik ik-calendar"></i>
-                                            </div>
+                                            <small class="text-small mt-10 d-block">Total de(s) demande(s) déjà livré(s)</small>
                                         </div>
-                                        <small class="text-small mt-10 d-block">Total de demande déjà livré</small>
+                                        <div class="progress progress-sm">
+                                            @if ($dashboard['ALL'] == 0)
+                                                <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $dashboard['LIVRED'] }}" 
+                                                aria-valuemin="0" aria-valuemax="100" 
+                                                style="width: 0%;"></div>
+                                            @else
+                                                <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $dashboard['LIVRED'] }}" 
+                                                aria-valuemin="0" aria-valuemax="{{ $dashboard['ALL'] }}" 
+                                                style="width: {{ ($dashboard['LIVRED'] / $dashboard['ALL']) * 100}}%;"></div>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-secondary" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <a href="{{ route('deniedDemande') }}">
+                                    <div class="widget">
+                                        <div class="widget-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="state">
+                                                    <h6>Refusé</h6>
+                                                    <h2>{{ $dashboard['DENIED'] }}</h2>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ik ik-x-circle"></i>
+                                                </div>
+                                            </div>
+                                            <small class="text-small mt-10 d-block">Nombre de(s) demande(s) réfusé(s)</small>
+                                        </div>
+                                        <div class="progress progress-sm">
+                                            @if ($dashboard['ALL'] == 0)
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $dashboard['DENIED'] }}" 
+                                                aria-valuemin="0" aria-valuemax="100" 
+                                                style="width: 0%;"></div>
+                                            @else
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $dashboard['DENIED'] }}" 
+                                                aria-valuemin="0" aria-valuemax="{{ $dashboard['ALL'] }}" 
+                                                style="width: {{ ($dashboard['DENIED'] / $dashboard['ALL']) * 100}}%;"></div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -146,97 +177,6 @@
                                     <div class="card-header"><h3>Donut chart</h3></div>
                                     <div class="card-body">
                                         <div id="c3-donut-chart"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <h4 class="card-title">Weather Report</h4>
-                                            <select class="form-control w-25 ml-auto">
-                                                <option selected="">Today</option>
-                                                <option value="1">Weekly</option>
-                                            </select>
-                                        </div>
-                                        <div class="d-flex align-items-center flex-row mt-30">
-                                            <div class="p-2 f-50 text-info"><i class="wi wi-day-showers"></i> <span>23<sup>°</sup></span></div>
-                                            <div class="p-2">
-                                            <h3 class="mb-0">Saturday</h3><small>Banglore, India</small></div>
-                                        </div>
-                                        <table class="table table-borderless">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Wind</td>
-                                                    <td class="font-medium">ESE 17 mph</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Humidity</td>
-                                                    <td class="font-medium">83%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Pressure</td>
-                                                    <td class="font-medium">28.56 in</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <hr>
-                                        <ul class="list-unstyled row text-center city-weather-days mb-0 mt-20">
-                                            <li class="col"><i class="wi wi-day-sunny mr-5"></i><span>09:30</span><h3>20<sup>°</sup></h3></li>
-                                            <li class="col"><i class="wi wi-day-cloudy mr-5"></i><span>11:30</span><h3>22<sup>°</sup></h3></li>
-                                            <li class="col"><i class="wi wi-day-hail mr-5"></i><span>13:30</span><h3>25<sup>°</sup></h3></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card" style="min-height: 422px;">
-                                    <div class="card-header">
-                                        <h3>Timeline</h3>
-                                        <div class="card-header-right">
-                                            <ul class="list-unstyled card-option">
-                                                <li><i class="ik ik-chevron-left action-toggle"></i></li>
-                                                <li><i class="ik ik-minus minimize-card"></i></li>
-                                                <li><i class="ik ik-x close-card"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="card-body timeline">
-                                        <div class="header bg-theme" style="background-image: url('images/placeholder/placeimg_400_200_nature.jpg')">
-                                            <div class="color-overlay d-flex align-items-center">
-                                                <div class="day-number">8</div>
-                                                <div class="date-right">
-                                                    <div class="day-name">Monday</div>
-                                                    <div class="month">February 2018</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <div class="bullet bg-pink"></div>
-                                                <div class="time">11am</div>
-                                                <div class="desc">
-                                                    <h3>Attendance</h3>
-                                                    <h4>Computer Class</h4>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="bullet bg-green"></div>
-                                                <div class="time">12pm</div>
-                                                <div class="desc">
-                                                    <h3>Design Team</h3>
-                                                    <h4>Hangouts</h4>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="bullet bg-orange"></div>
-                                                <div class="time">2pm</div>
-                                                <div class="desc">
-                                                    <h3>Finish</h3>
-                                                    <h4>Go to Home</h4>
-                                                </div>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>

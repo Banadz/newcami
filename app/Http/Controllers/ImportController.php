@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AgentImport;
@@ -47,9 +48,18 @@ class ImportController extends Controller
         try {
             // Spécifiez le type de fichier explicitement (xlsx dans cet exemple)
             $importedData = Excel::toCollection(new ArticleImport, $filePath, null, \Maatwebsite\Excel\Excel::XLSX);
+            foreach ($importedData[0] as $article){
+                $id_cat = $article["id_cat"];
+                
+                $categorie = Categorie::where('id', '=', $id_cat)->first();
+                $label = $categorie['LABEL_CATEGORIE'];
+
+                $article["id_cat"] = $label;
+            }
 
             return response()->json([
                 'success' => true,
+                // 'data' => $see
                 'data' => $importedData
             ]);
         } catch (\Exception $e) {

@@ -193,7 +193,7 @@ class getController extends Controller
         $type = $user->TYPE;
 
         $ref = $request->input('ref');
-        $demandes = Demande::with('article')->where('REF_DEMANDE', '=', $ref)->get();
+        $demandes = Demande::with('article', 'reference')->where('REF_DEMANDE', '=', $ref)->get();
         return response()->json([
             'success' => true,
             'demandes' => $demandes,

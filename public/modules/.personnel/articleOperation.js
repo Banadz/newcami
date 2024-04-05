@@ -123,6 +123,7 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response) {
+                
                 fichierArticle.clear().draw();
                 action = `<div class="table-actions">
                             <a href="#" class="multiArticleUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
@@ -130,7 +131,7 @@ $(document).ready(function(){
                         </div>`
                 $.each(response.data[0], function(i,v){
                     fichierArticle.row.add([
-                        v['categorie'],
+                        v['id_cat'],
                         v['designation'],
                         v['specification'],
                         v['unite'],
@@ -233,11 +234,27 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     if(response.success){
-                        // console.log(response)
-                        alert(`success! `+ response.eff + ` Article(s) inséré(s)` );
-                        window.location.reload()
+                        swal("Succès", response.eff + ` Article(s) inséré(s)`, {
+                            icon : "success",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-info'
+                                }
+                            },
+                        }).then((Delete) => {
+                            if (Delete) {
+                                window.location.reload()
+                            }
+                        })
                     }else{
-                        console.log('ERROR')
+                        swal("Echèc", response.error, {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        })
                     }
                 }
             });

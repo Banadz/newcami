@@ -61,9 +61,7 @@
                         </div>
                         <div class="modal-footer" id="confirmFooter">
                             <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">Imprimer</a>
-                            @if (Auth::user()->MATRICULE == $reference->agent->MATRICULE)
-                                <button type="submit" class="btn btn-primary">Accepter</button>
-                            @endif
+                            <button type="submit" class="btn btn-primary">Accepter</button>
                         </div>
                     </div>
                 </form>

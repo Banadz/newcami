@@ -322,8 +322,18 @@ $(document).ready(function(){
                 success: function(response) {
                     if(response.success){
                         // console.log(response)
-                        alert(`success! `+ response.eff + ` Agent(s) inséré(s)` );
-                        window.location.reload()
+                        swal("Succès", response.eff + ` Agent(s) inséré(s)`, {
+                            icon : "success",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-info'
+                                }
+                            },
+                        }).then((Delete) => {
+                            if (Delete) {
+                                window.location.reload()
+                            }
+                        })
                     }else{
                         console.log('ERROR')
                     }

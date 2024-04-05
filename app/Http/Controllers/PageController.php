@@ -21,6 +21,65 @@ use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
+    public function formatNumber($number)
+    {
+        if ($number === 0) {
+            return '0';
+        }
+        if ($number < 10) {
+            return '0' . $number;
+        } else {
+            return $number;
+        }
+    }
+    public function dashboard(){
+        $type2 = "Admin";
+        $type3 = "Super Admin";
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+        
+        $nouveau = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
+        ->where('ETAT', '=', 'En attente')->count());
+
+        $refus = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
+        ->where('ETAT', '=', 'Refused')->count());
+
+        $livraison = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
+        ->where('ETAT', '=', 'Livring')->count());
+
+        $recu = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
+        ->where('ETAT', '=', 'Livred')->count());
+
+        $total = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)->count());
+
+        if ($user->TYPE == $type2 || $user->TYPE == "Super Admin"){
+            $nouveau = $this->formatNumber(Reference::where('ETAT', '=', 'En attente')
+            ->where('CODE_SERVICE', '=', $code_service)->count());
+
+            $refus = $this->formatNumber(Reference::where('CODE_SERVICE', '=', $code_service)
+            ->where('ETAT', '=', 'Refused')->count());
+
+            $livraison = $this->formatNumber(Reference::where('CODE_SERVICE', '=', $code_service)
+            ->where('ETAT', '=', 'Livring')->count());
+
+            $recu = $this->formatNumber(Reference::where('CODE_SERVICE', '=', $code_service)
+            ->where('ETAT', '=', 'Livred')->count());
+
+            $total = $this->formatNumber(Reference::where('CODE_SERVICE', '=', $code_service)
+            ->count());
+        }
+        $dashbord = [
+            'NEW' => $nouveau,
+            'DENIED' => $refus,
+            'LIVRING' => $livraison,
+            'LIVRED' => $recu,
+            'ALL' => $total
+        ];
+        return view('pages.index', ['dashboard' => $dashbord]);
+    }
+
     public function __construct()
     {
         Carbon::setLocale('fr');
@@ -138,13 +197,13 @@ class PageController extends Controller
         $code_service = $agent->division->service->CODE_SERVICE;
 
         $references = Reference::with('demandes.article', 'agent.division')
-        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'En attente de livraison')
+        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Livring')
         ->withCount('demandes')->get();
 
         // Vérifier le type d"Agent...
         if ($user->TYPE == "User" ){
             $references = Reference::with('demandes.article', 'agent.division')
-            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'En attente de livraison')
+            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Livring')
             ->withCount('demandes')->get();
         }
 
@@ -152,6 +211,7 @@ class PageController extends Controller
             $carbonDateDEB = Carbon::parse($dd->DATE_DEMANDE);
             $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
         }
+        // return $references;
         return view('pages.demandeLivraison', [
             'references' => $references
         ]);
@@ -178,6 +238,31 @@ class PageController extends Controller
             $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
         }
         return view('pages.demandeLivred', [
+            'references' => $references
+        ]);
+    }
+    public function pagedemandeDenied(){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+
+        $references = Reference::with('demandes.article', 'agent.division')
+        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Refused')
+        ->withCount('demandes')->get();
+
+        // Vérifier le type d"Agent...
+        if ($user->TYPE == "User" ){
+            $references = Reference::with('demandes.article', 'agent.division')
+            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Refused')
+            ->withCount('demandes')->get();
+        }
+
+        foreach ($references as $dd) {
+            $carbonDateDEB = Carbon::parse($dd->DATE_DEMANDE);
+            $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
+        }
+        return view('pages.demandeRefused', [
             'references' => $references
         ]);
     }

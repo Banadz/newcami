@@ -91,25 +91,35 @@ class InsertionController extends Controller
         $dataArticle = $request->input('donnees');
         $donneesArticle = json_decode($dataArticle, true);
         $eff = 0;
-        foreach($donneesArticle as $articless){
-            $article = new Article();
-            $article->id_categorie = $articless[0];
-            $article->DESIGNATION = $articless[1];
-            if(isset($articless[2])){
-                $article->SPECIFICATION = $articless[2];
+        try{
+            foreach($donneesArticle as $articless){
+                $label_cat = $articless[0];
+                $categorie = Categorie::where('LABEL_CATEGORIE', '=', $label_cat)->first();
+                $id_cool = $categorie['id'];
+
+                $article = new Article();
+                $article->id_categorie = $id_cool;
+                $article->DESIGNATION = $articless[1];
+                if(isset($articless[2])){
+                    $article->SPECIFICATION = $articless[2];
+                }
+                $article->UNITE = $articless[3];
+                $article->EFFECTIF = 0;
+                $article->DISPONIBLE = true;
+                $article->CODE_SERVICE = $code_service;
+                $article->save();
+                $eff = $eff + 1;
             }
-            $article->UNITE = $articless[3];
-            $article->EFFECTIF = 0;
-            $article->DISPONIBLE = true;
-            $article->CODE_SERVICE = $code_service;
-            $article->save();
-            // dump($article);
-            $eff = $eff + 1;
+            return response()->json([
+                'success' => true,
+                'eff' => $eff
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => $e
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'eff' => $eff
-        ]);
+        
     }
 
     public function Agent (Request $request){
@@ -220,34 +230,41 @@ class InsertionController extends Controller
         $data = $request->input('donnees');
         $donnees = json_decode($data, true);
         $reference = $request->input('reference');
+        try{
+            $de = Demande::where('id', $donnees[0][0])->first();
+            $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
+            $ref_demande->ETAT = 'Livring';
+            // $ref_demande->save();
 
-        $de = Demande::where('id', $donnees[0][0])->first();
-        $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
-        $ref_demande->ETAT = 'En attente de livraison';
-        $ref_demande->save();
-
-        foreach ($donnees as $ligne) {
-            $demande = Demande::with('article')->where('id', $ligne[0])->first();
-            if ($ligne[4] == 0){
-                $demande->ETAT_DEMANDE = "Réfusé";
-            }else{
-                if($ligne[4] != 0){
-                    $demande->ETAT_DEMANDE = "En attente de livraison";
+            foreach ($donnees as $ligne) {
+                $demande = Demande::with('article')->where('id', $ligne[0])->first();
+                if ($ligne[4] == 0){
+                    $demande->ETAT_DEMANDE = "Refused";
                 }else{
-                    abort(404);
+                    if($ligne[4] != 0){
+                        $demande->ETAT_DEMANDE = "Livring";
+                    }else{
+                        abort(404);
+                    }
                 }
-            }
-            $demande->QUANTITE_ACC = $ligne[4];
-            $demande->save();
+                $demande->QUANTITE_ACC = $ligne[4];
+                // $demande->save();
 
-            $stock = $demande->article->EFFECTIF;
-            $demande->article->EFFECTIF = $stock - $ligne[4];
-            $demande->article->save();
+                $stock = $demande->article->EFFECTIF;
+                $demande->article->EFFECTIF = $stock - $ligne[4];
+                // $demande->article->save();
+            }
+            return response()->json([
+                'success' => true,
+                'ref' => $reference,
+                'data' => $donnees
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => $e
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'ref' => $reference
-        ]);
     }
 
     public function refuserDem(Request $request){
@@ -257,12 +274,12 @@ class InsertionController extends Controller
 
         $de = Demande::where('id', $donnees[0][0])->first();
         $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
-        $ref_demande->ETAT = 'Refusé';
-        // $ref_demande->save();
+        $ref_demande->ETAT = 'Refused';
+        $ref_demande->save();
 
         foreach ($donnees as $ligne) {
             $demande = Demande::with('article')->where('id', $ligne[0])->first();
-            $demande->ETAT_DEMANDE = "Refusé";
+            $demande->ETAT_DEMANDE = "Refused";
             $demande->save();
         }
         return response()->json([

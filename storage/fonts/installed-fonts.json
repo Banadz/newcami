@@ -1,19 +1,19 @@
 {
     "nunito sans": {
-        "300": "\/home\/andrianajoro\/Documents\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_300_df202a0ebbc34c2f83b46bbf34fdf8cc",
-        "normal": "\/home\/andrianajoro\/Documents\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_normal_dada2f23bd7efc0c92ec194f84745c12",
-        "600": "\/home\/andrianajoro\/Documents\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_600_3798fe16945cbb8405aaeda1f3686d57",
-        "bold": "\/home\/andrianajoro\/Documents\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_bold_b534b3f85c9da74c5f16813cd4e9e593",
-        "800": "nunito_sans_800_b4bf7c915a1546080ffcc03e054d2198"
+        "300": "\/home\/xbanadz\/Documents\/PROJECT\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_300_df202a0ebbc34c2f83b46bbf34fdf8cc",
+        "normal": "\/home\/xbanadz\/Documents\/PROJECT\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_normal_dada2f23bd7efc0c92ec194f84745c12",
+        "600": "\/home\/xbanadz\/Documents\/PROJECT\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_600_3798fe16945cbb8405aaeda1f3686d57",
+        "bold": "nunito_sans_bold_b534b3f85c9da74c5f16813cd4e9e593",
+        "800": "\/home\/xbanadz\/Documents\/PROJECT\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/nunito_sans_800_b4bf7c915a1546080ffcc03e054d2198"
     },
     "font awesome 5 brands": {
-        "normal": "font_awesome_5_brands_normal_d2fe850b1374ea52f4967a077777d613"
+        "normal": "font_awesome_5_brands_normal_a9e57f91f7ef12a1c64109feea6f6b5f"
     },
     "font awesome 5 free": {
-        "normal": "\/home\/andrianajoro\/Documents\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/font_awesome_5_free_normal_aaf109b7d7952681ddbf5dd63574c149",
-        "900": "font_awesome_5_free_900_af4b4c054fe93c693abc116cb644b2fd"
+        "normal": "\/home\/xbanadz\/Documents\/PROJECT\/Archive Projet\/STAGE\/SRSPHM\/CAMI\/newcami\/storage\/fonts\/font_awesome_5_free_normal_fedfed3c7a97c8d782ff5fbf39fdfa70",
+        "900": "font_awesome_5_free_900_870d1a8ec474570d7f272af0e3c2f7c7"
     },
     "iconkit": {
-        "normal": "iconkit_normal_12124e448fa797cdccf6231f8e4ac86d"
+        "normal": "iconkit_normal_af71a163c89307d06ff6944b9d34fb20"
     }
 }
