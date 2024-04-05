@@ -223,13 +223,13 @@ class PageController extends Controller
         $code_service = $agent->division->service->CODE_SERVICE;
 
         $references = Reference::with('demandes.article', 'agent.division')
-        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Livré')
+        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Livred')
         ->withCount('demandes')->get();
 
         // Vérifier le type d"Agent...
         if ($user->TYPE == "User" ){
             $references = Reference::with('demandes.article', 'agent.division')
-            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Livré')
+            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Livred')
             ->withCount('demandes')->get();
         }
 

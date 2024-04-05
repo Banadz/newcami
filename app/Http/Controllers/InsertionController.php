@@ -234,7 +234,7 @@ class InsertionController extends Controller
             $de = Demande::where('id', $donnees[0][0])->first();
             $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
             $ref_demande->ETAT = 'Livring';
-            // $ref_demande->save();
+            $ref_demande->save();
 
             foreach ($donnees as $ligne) {
                 $demande = Demande::with('article')->where('id', $ligne[0])->first();
@@ -248,7 +248,7 @@ class InsertionController extends Controller
                     }
                 }
                 $demande->QUANTITE_ACC = $ligne[4];
-                // $demande->save();
+                $demande->save();
 
                 $stock = $demande->article->EFFECTIF;
                 $demande->article->EFFECTIF = $stock - $ligne[4];
@@ -292,23 +292,35 @@ class InsertionController extends Controller
         $data = $request->input('donnees');
         $donnees = json_decode($data, true);
         $reference = $request->input('reference');
+        try{
+            foreach ($donnees as $ligne) {
+                $demande = Demande::with('article')->where('id', $ligne[0])->first();
+                if($demande->ETAT_DEMANDE == 'Livring'){
+                    if($ligne[5] == 0 || $ligne[5] == null || !$ligne[5]){    
+                        $demande->ETAT_DEMANDE = 'NoLivred';
+                    }else{
+                        $demande->ETAT_DEMANDE = 'Livred';
+                    }
+                }
+                $demande->QUANTITE_LIV = $ligne[5];
+                $demande->save();
+            }
 
-        foreach ($donnees as $ligne) {
-            $demande = Demande::with('article')->where('id', $ligne[0])->first();
-            $demande->QUANTITE_LIV = $ligne[5];
-            $demande->ETAT_DEMANDE = 'Livré';
-            $demande->save();
+            $de = Demande::where('id', $donnees[0][0])->first();
+            $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
+            $ref_demande->ETAT = 'Livred';
+            $ref_demande->save();
+
+            return response()->json([
+                'success' => true,
+                'ref' => $reference
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => $e
+            ]);
         }
-
-        $de = Demande::where('id', $donnees[0][0])->first();
-        $ref_demande = Reference::where('REFERENCE', '=', $de->REF_DEMANDE)->first();
-        $ref_demande->ETAT = 'Livré';
-        $ref_demande->save();
-
-        return response()->json([
-            'success' => true,
-            'ref' => $reference
-        ]);
     }
     public function Origine(Request $request){
         $data = $request->input('donnees');

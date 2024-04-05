@@ -165,7 +165,7 @@
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">{{$demande->article->UNITE}}</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE}}</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_ACC}}</td>
-                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;"></td>
+                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_LIV}}</td>
                                     </tr>
                                     @php
                                         $i= $i+1

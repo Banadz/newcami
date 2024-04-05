@@ -87,7 +87,7 @@
                                             <td>{{ $reference->demandes_count }} demande(s)</td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a href="{{ route('sameRefDemande') }}" class="mombaMomba" data-toggle="modal" data-target="#demandeConfirm" title="Details"><i class="ik ik-info"></i></a>
+                                                    <a href="{{ route('sameRefDemande') }}" class="jiabyJiaby" data-toggle="modal" data-target="#demandeDeniedDetail" title="Details"><i class="ik ik-info"></i></a>
                                                 </div>
                                             </td>
 
@@ -108,7 +108,7 @@
 
     @section('updateModal')
         {{-- Update Modals --}}
-        @include('pages.modals.demandeLivredDetail')
+        @include('pages.modals.demandeDeniedDetail')
     @endsection
 
     @section('specialScript')

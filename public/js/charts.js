@@ -163,6 +163,7 @@
       ids: 'data2'
     });
   }, 2500);
+  
   var c3DonutChart = c3.generate({
     bindto: '#c3-donut-chart',
     data: {

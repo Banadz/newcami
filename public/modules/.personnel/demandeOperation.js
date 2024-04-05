@@ -1,12 +1,20 @@
 $(document).ready(function(){
     const firstRedirection = document.querySelector('meta[name="demande-waiting"]').getAttribute('content');
+    const livredUrl = document.querySelector('meta[name="demande-recieved"]').getAttribute('content');
+    const printUrl = document.querySelector('meta[name="demande-print"]').getAttribute('content');
     const livringUrl = document.querySelector('meta[name="demande-livring"]').getAttribute('content');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     const controlQual = document.querySelector('meta[name="controlQual-route"]').getAttribute('content')
     const user = document.querySelector('meta[name="user-type"]').getAttribute('content')
     const userInfo = document.querySelector('meta[name="user-info"]').getAttribute('content')
+    const userMatri = document.querySelector('meta[name="user-matricule"]').getAttribute('content')
     
     $('#livred_dem').DataTable({
+        "searching": true,
+        "lengthMenu":[3, 10, 20, 50, 100],
+        "pageLength":3,
+    })
+    $('#denied_dem').DataTable({
         "searching": true,
         "lengthMenu":[3, 10, 20, 50, 100],
         "pageLength":3,
@@ -198,47 +206,6 @@ $(document).ready(function(){
         var url = $(this).attr('target')
         var article = objectif.attr('name')
         ControlQant(article, url, objectif)
-        // $.ajax({
-        //     type:'POST',
-        //     url: url,
-        //     data:{
-        //         _token:csrfToken,
-        //         article:article
-        //     },
-        //     success:function(response, statut){
-        //         // console.log(response)
-        //         if (response.success){
-        //             // $("#categorieUpdate").modal('show')
-        //             // $('#unite').val(response.article['0'].UNITE)
-        //             quant = objectif.val();
-        //             if (quant > response.article['0'].EFFECTIF){
-        //                 objectif.removeClass('is-valid');
-        //                 objectif.addClass('is-invalid');
-        //                 objectif.addClass('champs-invalide');
-
-        //             }else{
-        //                 objectif.removeClass('champs-invalide');
-        //                 objectif.removeClass('is-invalid');
-        //                 objectif.addClass('is-valid');
-        //             }
-
-        //         }else{
-        //             swal("Problème de connexion", "Veuillez réessayer plutard", {
-        //                 icon : "error",
-        //                 buttons: {
-        //                     confirm: {
-        //                         className : 'btn btn-danger'
-        //                     }
-        //                 },
-        //             }).then((Delete) => {
-        //                 if (Delete) {
-        //                     window.location.reload()
-        //                 }
-        //             })
-        //         }
-        //     }
-
-        // })
     })
 
     function ControlQant(cible, url, source){
@@ -251,11 +218,7 @@ $(document).ready(function(){
                 article:cible
             },
             success:function(response, statut){
-                // console.log(response)
                 if (response.success){
-                    // $("#categorieUpdate").modal('show')
-                    // $('#unite').val(response.article['0'].UNITE)
-
                     const reference = response.article['0'].EFFECTIF
                     if (input > reference){
                         source.removeClass('is-valid');
@@ -337,7 +300,7 @@ $(document).ready(function(){
         }
     })
 
-    // VALIDATION ADDITION....
+    // DEMANDE ADDITION....
     var form = $(".putArtForm")
     const formulaire = $('#addArticle');
     const oldtableau = $('#alt-pg-dt').DataTable()
@@ -348,6 +311,7 @@ $(document).ready(function(){
         "pageLength":3,
     });
 
+    //AJOUTER..... 
     $(formulaire).on('submit', function(pre){
         pre.preventDefault()
         if ($('#quantite').hasClass('is-invalid')) {
@@ -439,12 +403,6 @@ $(document).ready(function(){
             }
         });
     });
-        // écouter les modifications par rapport à la dataTable
-        // $('#alt-pg-dt').DataTable().on('keyup', 'td', function(e) {
-        //     var columnIndex = $('#alt-pg-dt').DataTable().cell(this).index().column;
-        //     var newValue = $(this).text();
-        //     $('#alt-pg-dt').DataTable().cell(this).data(newValue).draw()
-        // });
 
     // POST....
     $("#toValide").on('submit', function(ko){
@@ -564,8 +522,7 @@ $(document).ready(function(){
                     infoTable.clear().draw();
                     $.each(response.demandes, function(i,v){
                         if (response.user != 'User'){
-                            const quantitess = `<input type="number" name=`+v['article']['id']+` target=`+controlQual+`
-                            class="form-control editableQte kwantite kotrokotro" value="">`
+                            var quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQual+`" class="form-control editableQte kwantite kotrokotro manahira">`
                             if (v['article']['SPECIFICATION']){
                                 infoTable.row.add([
                                     v['id'],
@@ -622,12 +579,11 @@ $(document).ready(function(){
     })
 
     // ENVOYER VALIDATION....
-
-    $("#formValidDem").on('submit', function(ko){
+    const validationForm = $('#formValidDem')
+    $(validationForm).on('submit', function(ko){
         ko.preventDefault()
-        const nombreDeLignes = infoTable.rows().count();
-        if (1 > nombreDeLignes){
-            swal('Echèc', `Votre liste est vide`,{
+        if ($('.kotrokotro').hasClass('is-invalid')) {
+            swal('Echèc', `La quantité requise est en excée`,{
                 icon : "error",
                 buttons: {
                     confirm: {
@@ -636,8 +592,10 @@ $(document).ready(function(){
                 },
             })
         }else{
-            if ($('.kotrokotro').hasClass('is-invalid')) {
-                swal('Echèc', `La quantité requise est en excée`,{
+            const donnees = $('#infoDem').DataTable().rows().data().toArray();
+            var nombreDeLignes = $('#infoDem').DataTable().rows().count();
+            if (1 > nombreDeLignes){
+                swal('Echèc', `Votre liste est vide`,{
                     icon : "error",
                     buttons: {
                         confirm: {
@@ -646,169 +604,124 @@ $(document).ready(function(){
                     },
                 })
             }else{
-
-                const dataSSS = $('#infoDem').DataTable().rows().data().toArray();
-                dataSSS.forEach(function(tow) {
-                    const inputValu = $(tow[4]).attr('value')
-                    const parsedValu = parseInt(inputValu)
-                    tow[4] = parsedValu
+                datafrom = validationForm.serialize()
+                const trueData = {}
+                $.each(datafrom.split('&'), function(){
+                    var pair = this.split('=')
+                    trueData[pair[0]] = decodeURIComponent(pair[1] || '')
+                })
+                // console.log(JSON.stringify(trueData))
+                donnees.forEach(function(row) {
+                    const inputName = $(row[4]).attr('name')
+                    const parsedName = parseInt(inputName);
+                    const inputValue = trueData[parsedName]
+                    const parsedValue = parseInt(inputValue);
+                    row[4] = parsedValue
                 });
-                console.log(dataSSS)
-                // const dataJSON = JSON.stringify(dataSSS);
-                // var reference = $('#ref_dem').attr('title')
-                // url = $(this).attr('action')
-                // $.ajax({
-                //     url: url,
-                //     method: 'POST',
-                //     data: {
-                //         _token:csrfToken,
-                //         reference:reference,
-                //         donnees: dataJSON
-                //     },
-                //     success: function(response) {
-                //         if(response.success){
-                //             console.log(response)
-                //             swal('Succès', `Demande ref°`+ response.ref + ` traité`,{
-                //                 icon : "success",
-                //                 buttons: {
-                //                     confirm: {
-                //                         className : 'btn btn-info'
-                //                     }
-                //                 },
-                //             }).then((Delete) => {
-                //                 if (Delete) {
-                //                     window.location.href = livringUrl
-                //                 }else {
-                //                     window.location.href = livringUrl
-                //                 }
-                //             });
-                //         }else{
-                //             swal('Echèc', `Veuillez vérifier votre connexion et réessayer plutard.
-                //             `+response.message+``,{
-                //                 icon : "success",
-                //                 buttons: {
-                //                     confirm: {
-                //                         className : 'btn btn-info'
-                //                     }
-                //                 },
-                //             })
-                //         }
-                //     }
-                // });
+                const donneesJSON = JSON.stringify(donnees);
+                var reference = $('#ref_dem').attr('title')
+                url = $(this).attr('action')
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _token:csrfToken,
+                        reference:reference,
+                        donnees: donneesJSON
+                    },
+                    success: function(response) {
+                        if(response.success){
+                            console.log(response)
+                            swal('Succès', `Demande ref°`+ response.ref + ` traité`,{
+                                icon : "success",
+                                buttons: {
+                                    confirm: {
+                                        className : 'btn btn-info'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    window.location.href = livringUrl
+                                }else {
+                                    window.location.href = livringUrl
+                                }
+                            });
+                        }else{
+                            swal('Echèc', `Veuillez vérifier votre connexion et réessayer plutard.
+                            `+response.message+``,{
+                                icon : "success",
+                                buttons: {
+                                    confirm: {
+                                        className : 'btn btn-info'
+                                    }
+                                },
+                            })
+                        }
+                    }
+                });
+
             }
         }
-
-        // alert(reference)
-        // const donnees = $('#infoDem').DataTable().rows().data().toArray();
-        // const donneesJSON = JSON.stringify(donnees);
-        // url = $(this).attr('target')
-        // $.ajax({
-        //     url: url,
-        //     method: 'POST',
-        //     data: {
-        //         _token:csrfToken,
-        //         reference:reference,
-        //         donnees: donneesJSON
-        //     },
-        //     success: function(response) {
-        //         alert(response.ref);
-        //         window.location.reload()
-        //     }
-        // });
-
-
     })
 
-    // Écoute de l'événement keypress
-    function listenChange(tableau, numCol){
-        
-    }
-    infoTable.on('keyup', '.kotrokotro', function(e) {
-        const objectif = $(this)
-        const identifiant = objectif.attr('name')
-        const target = objectif.attr('target')
-        const value =  objectif.val()
-        $ttr = $(this).closest('tr');
-        var data =  $ttr.children("td").map(function(){
+    // REFUSER DEMANDE..............
+    const deniedTable = $("#denied_dem").DataTable()
+    $('#demandeL tbody').on('click', '.jiabyJiaby', function(echo){
+        echo.preventDefault()
+        $tr = $(this).closest('tr');
+        var data =  $tr.children("td").map(function(){
             return $(this).text()
         }).get();
-        
+        var ref = data[0]
+        var url = $(this).attr('href')
+        // console.log(data)
         $.ajax({
             type:'POST',
-            url: target,
+            url: url,
             data:{
                 _token:csrfToken,
-                article:identifiant
+                ref:ref
             },
             success:function(response, statut){
                 // console.log(response)
                 if (response.success){
-                    // $("#categorieUpdate").modal('show')
-                    // $('#unite').val(response.article['0'].UNITE)
-
-                    const reference = response.article['0'].EFFECTIF
-                    if ( value > reference){
-                        if (value){
-                            const newData = {
-                                0: data[0],
-                                1: data[1],
-                                2: data[2],
-                                3: data[3],
-                                4: `<input type="number" name=`+identifiant+` target=`+target+`
-                                class="form-control editableQte kwantite kotrokotro is-invalid champs-invalide" 
-                                value="`+value+`">`,
-                                5: data[5]
-                            }
-                            infoTable.row($ttr).data(newData).draw()
-                            infoTable.draw()
+                    $('#ref_dem').html(`Réference: `+ref)
+                    $('#ref_dem').attr('title', ref)
+                    infoTable.clear().draw();
+                    $.each(response.demandes, function(i,v){
+                        if (v['article']['SPECIFICATION']){
+                            deniedTable.row.add([
+                                v['id'],
+                                v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
+                                v['article']['EFFECTIF'],
+                                v['QUANTITE'],
+                                v['UNITE']
+                            ]).draw();
+                        }else{
+                            deniedTable.row.add([
+                                v['id'],
+                                v['article']['DESIGNATION'],
+                                v['article']['EFFECTIF'],
+                                v['QUANTITE'],
+                                v['UNITE']
+                            ]).draw();
                         }
-                    }else{
-                        if (value) {
-
-                            const newData = {
-                                0: data[0],
-                                1: data[1],
-                                2: data[2],
-                                3: data[3],
-                                4: `<input type="number" name=`+identifiant+` target=`+target+`
-                                class="form-control editableQte kwantite kotrokotro is-valid" 
-                                value="`+value+`">`,
-                                5: data[5]
-                            }
-                            infoTable.row($ttr).data(newData).draw()
-                            infoTable.draw()
-                        }
-                        
-                    }
+                    })
 
                 }else{
-                    swal("Problème de connexion", "Veuillez réessayer plutard", {
+                    swal('Echèc', `Vérifier votre connexion et réessayer plutard`,{
                         icon : "error",
                         buttons: {
                             confirm: {
                                 className : 'btn btn-danger'
                             }
                         },
-                    }).then((Delete) => {
-                        if (Delete) {
-                            window.location.reload()
-                        }
                     })
                 }
             }
 
         })
-        
-    });
-
-    // livringData.on('keyup', 'td', function(e) {
-    //     var columnIndex = livringData.cell(this).index().column;
-    //     var newValue = $(this).text();
-
-    //     livringData.cell(this).data(newValue).draw()
-    // });
-
-    // REFUSER DEMANDE..............
+    })
 
     $('body').on('click', "#refuseDem",function(){
         // alert('demande refusée')
@@ -914,14 +827,14 @@ $(document).ready(function(){
                 // console.log(response)
                 if (response.success){
                     $('#ref_dem').html(`Réference: `+ref)
-                    if (userInfo['MATRICULE'] == response.demandes[0].reference['MATRICULE']){
-                        const html = `  <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">
+                    if (userMatri == response.demandes[0].reference['MATRICULE']){
+                        const html = `  <a href="`+printUrl+`" id="impressionant" class="btn btn-success">
                                             Imprimer
                                         </a>
                                         <button type="submit" class="btn btn-primary">Accepter</button>`
                         $('#confirmFooter').html(html)
                     }else{
-                        const html = `  <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">
+                        const html = `  <a href="`+printUrl+`" id="impressionant" class="btn btn-success">
                                             Imprimer
                                         </a>`
                         $('#confirmFooter').html(html)
@@ -931,25 +844,49 @@ $(document).ready(function(){
                     livringData.clear().draw();
                     $.each(response.demandes, function(i,v){
                         if (response.user == 'User'){
-                            livringData.row.add([
-                                v['id'],
-                                v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
-                                v['article']['EFFECTIF'],
-                                v['QUANTITE'],
-                                v['QUANTITE_ACC'],
-                                v['QUANTITE_ACC'],
-                                v['UNITE']
-                            ]).draw();
+                            const quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQual+`" class="form-control editableQte kwantite kotrokotro">`
+                            
+                            if (v['article']['SPECIFICATION']){
+                                livringData.row.add([
+                                    v['id'],
+                                    v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
+                                    v['article']['EFFECTIF'],
+                                    v['QUANTITE'],
+                                    v['QUANTITE_ACC'],
+                                    quantitess,
+                                    v['UNITE']
+                                ]).draw();
+                            }else{
+                                livringData.row.add([
+                                    v['id'],
+                                    v['article']['DESIGNATION'],
+                                    v['article']['EFFECTIF'],
+                                    v['QUANTITE'],
+                                    v['QUANTITE_ACC'],
+                                    quantitess,
+                                    v['UNITE']
+                                ]).draw();
+                            }
                         }else{
-                            livringData.row.add([
-                                v['id'],
-                                v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
-                                v['article']['EFFECTIF'],
-                                v['QUANTITE'],
-                                v['QUANTITE_ACC'],
-                                v['QUANTITE_ACC'],
-                                v['UNITE']
-                            ]).draw();
+                            if (v['article']['SPECIFICATION']){
+                                livringData.row.add([
+                                    v['id'],
+                                    v['article']['DESIGNATION']+` `+v['article']['SPECIFICATION'],
+                                    v['article']['EFFECTIF'],
+                                    v['QUANTITE'],
+                                    v['QUANTITE_ACC'],
+                                    v['UNITE']
+                                ]).draw();
+                            }else{
+                                livringData.row.add([
+                                    v['id'],
+                                    v['article']['DESIGNATION'],
+                                    v['article']['EFFECTIF'],
+                                    v['QUANTITE'],
+                                    v['QUANTITE_ACC'],
+                                    v['UNITE']
+                                ]).draw();
+                            }
                         }
                     })
 
@@ -968,7 +905,8 @@ $(document).ready(function(){
         })
     })
 
-    $("#formConfirmDem").on('submit', function(ko){
+    const formRecieve = $("#formConfirmDem")
+    $(formRecieve).on('submit', function(ko){
         ko.preventDefault()
 
         var reference = $('#ref_dem').attr('title')
@@ -976,39 +914,80 @@ $(document).ready(function(){
         const multidata = livringData.rows().data().toArray();
 
         url = $(this).attr('action')
-
-        if (1 > nombreDeLignes){
-            alert("Votre tableau est vide")
+        if ($('.kotrokotro').hasClass('is-invalid')) {
+            swal('Echèc', `La quantité requise est en excée`,{
+                icon : "error",
+                buttons: {
+                    confirm: {
+                        className : 'btn btn-danger'
+                    }
+                },
+            })
         }else{
-
-            const donnees = livringData.rows().data().toArray();
-            donnees.forEach(function(row) {
-                const inputValue = $(row[4]).val()
-                const parsedValue = parseInt(inputValue);
-                row[4] = parsedValue;
-            });
-            console.log(donnees)
-            // const donneesJSON = JSON.stringify(donnees);
-            // $.ajax({
-            //     url: url,
-            //     method: 'POST',
-            //     data: {
-            //         _token:csrfToken,
-            //         reference:reference,
-            //         donnees: donneesJSON
-            //     },
-            //     success: function(response) {
-            //         if(response.success){
-            //             // console.log(response)
-            //             alert(`Demande ref ° `+ response.ref + ` livré` );
-            //             window.location.reload()
-            //         }else{
-            //             console.log('ERROR')
-            //         }
-            //     }
-            // });
+            if (1 > nombreDeLignes){
+                swal('Echèc', `Votre liste est vide`,{
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                })
+            }else{
+                datafromRec = formRecieve.serialize()
+                const donnees = livringData.rows().data().toArray();
+                const trueData = {}
+                $.each(datafromRec.split('&'), function(){
+                    var pair = this.split('=')
+                    trueData[pair[0]] = decodeURIComponent(pair[1] || '')
+                })
+                donnees.forEach(function(row) {
+                    const inputName = $(row[5]).attr('name')
+                    const parsedName = parseInt(inputName);
+                    const inputValue = trueData[parsedName]
+                    const parsedValue = parseInt(inputValue);
+                    row[5] = parsedValue
+                });
+                const donneesJSON = JSON.stringify(donnees);
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _token:csrfToken,
+                        reference:reference,
+                        donnees: donneesJSON
+                    },
+                    success: function(response) {
+                        if(response.success){
+                            swal('Succès', `Demande ref°`+ response.ref + ` reçu`,{
+                                icon : "success",
+                                buttons: {
+                                    confirm: {
+                                        className : 'btn btn-info'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    window.location.href = livredUrl
+                                }else {
+                                    window.location.href = livredUrl
+                                }
+                            })
+                        }else{
+                            console.log(response.message)
+                            swal('Echèc', `Veuillez verfier votre connection et réessayer plutard`,{
+                                icon : "error",
+                                buttons: {
+                                    confirm: {
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            })
+                        }
+                    }
+                });
+            }
         }
-
 
     })
 
@@ -1033,9 +1012,9 @@ $(document).ready(function(){
                 if (response.success){
                     $('#ref_dem').html(`Réference: `+ref)
                     $('#ref_dem').attr('title', ref)
-                    livringData.clear().draw();
+                    $('#livred_dem').DataTable().clear().draw();
                     $.each(response.demandes, function(i,v){
-                        if (response.user == 'User'){
+                        if (v['article']['SPECIFICATION']){
                             $('#livred_dem').DataTable().row.add([
                                 v['id'],
                                 v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
@@ -1048,7 +1027,7 @@ $(document).ready(function(){
                         }else{
                             $('#livred_dem').DataTable().row.add([
                                 v['id'],
-                                v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
+                                v['article']['DESIGNATION'],
                                 v['article']['EFFECTIF'],
                                 v['QUANTITE'],
                                 v['QUANTITE_ACC'],
@@ -1059,7 +1038,14 @@ $(document).ready(function(){
                     })
 
                 }else{
-                    alert(`Impossible de se connecter au serveur à l’adresse `+window.location+`.`)
+                    swal('Echèc', `Veuillez verfier votre connection et réessayer plutard`,{
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    })
                 }
             }
 
@@ -1071,43 +1057,39 @@ $(document).ready(function(){
     $('body').on('click', "#impressBtn", function(ko){
         ko.preventDefault()
         var reference = $('#ref_dem').attr('title')
-        const impression = infoTable.rows().data().toArray();
-
-        var nombreDeLignes = infoTable.rows().count();
-        if (1 > nombreDeLignes){
-            swal('Echèc', `Votre liste est vide`,{
-                icon : "error",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-danger'
-                    }
-                },
-            })
-        }else{
-            if (user !=  'User'){
-                impression.forEach(function(row) {
-                    const inputValue = $(row[4]).val()
-                    const parsedValue = parseInt(inputValue);
-                    row[4] = parsedValue;
-                });
-            }
-            const impressionJSON = JSON.stringify(impression);
-            var url = $(this).attr('href')
-
-            var getrefrence = "reference="+encodeURIComponent(JSON.stringify(reference))
-            var getdata = "donnees="+ encodeURIComponent(JSON.stringify(impressionJSON))
-            window.location.href = url+"?"+getrefrence+"&&"+getdata
-        }
+        const table = infoTable
+        const btn = $(this)
+        impressionDemande(reference, table, btn)
     })
 
     $('body').on('click', "#impressionant", function(ko){
         ko.preventDefault()
         var reference = $('#ref_dem').attr('title')
-        const impression = livringData.rows().data().toArray();
+        const btn = $(this)
+        const table = livringData
+        impressionDemande(reference, table, btn)
+    })
+    $('body').on('click', "#impressionante", function(ko){
+        ko.preventDefault()
+        var reference = $('#ref_dem').attr('title')
+        const btn = $(this)
+        const table = $('#livred_dem').DataTable()
+        impressionDemande(reference, table, btn)
+    })
+    $('body').on('click', "#impressionantes", function(ko){
+        ko.preventDefault()
+        var reference = $('#ref_dem').attr('title')
+        const btn = $(this)
+        const table = $('#denied_dem').DataTable()
+        impressionDemande(reference, table, btn)
+    })
+    function impressionDemande(reference, table, button){
+        var reference = $('#ref_dem').attr('title')
+        const impression = table.rows().data().toArray();
 
-        var nombreDeLignes = livringData.rows().count();
+        var nombreDeLignes = table.rows().count();
         if (1 > nombreDeLignes){
-            swal('Echèc', `La quantité requise est en excée`,{
+            swal('Echèc', `Votre table est vide`,{
                 icon : "error",
                 buttons: {
                     confirm: {
@@ -1117,13 +1099,13 @@ $(document).ready(function(){
             })
         }else{
             const impressionJSON = JSON.stringify(impression);
-            var url = $(this).attr('href')
+            var url = button.attr('href')
 
             var getrefrence = "reference="+encodeURIComponent(JSON.stringify(reference))
             var getdata = "donnees="+ encodeURIComponent(JSON.stringify(impressionJSON))
             window.location.href = url+"?"+getrefrence+"&&"+getdata
 
         }
-    })
+    }
 
 })

@@ -1,9 +1,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="modal fade" id="demandeConfirm" tabindex="-1" role="dialog" aria-labelledby="fullwindowModalLabel" aria-hidden="true">
+        <div class="modal fade" id="demandeDeniedDetail" tabindex="-1" role="dialog" aria-labelledby="fullwindowModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <form class="forms-sample" action="{{route('confirmationDemande')}}" id="formConfirmDem" method="POST">
+                <form class="forms-sample" action="" id="" method="POST">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -23,7 +23,7 @@
                                                         <i class="ik ik-navigation bg-blue"></i>
                                                         <div class="d-inline">
                                                             <h5>Demande</h5>
-                                                            <span>Veuillez vérifier les quantités à accorder avant de valider.</span>
+                                                            <span>Affiche les details de la demande.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -38,7 +38,7 @@
                                         {{-- <input type="text" class="form-control" name="ref_dem" id="ref_dem" placeholder="Reference n°2023/0001...."> --}}
                                     </div>
                                     <div class="dt-responsive">
-                                        <table id="valid_dem"
+                                        <table id="denied_dem"
                                                 class="table table-striped table-bordered nowrap">
                                             <thead>
                                             <tr>
@@ -46,10 +46,6 @@
                                                 <th>Article</th>
                                                 <th>Stock</th>
                                                 <th>Qté demandé</th>
-                                                @if (Auth::user()->TYPE == "User")
-                                                <th>Qté accordé</th>
-                                                @endif
-                                                <th>Qté livré</th>
                                                 <th>Unité</th>
                                             </tr>
                                             </thead>
@@ -61,9 +57,8 @@
 
                             </div>
                         </div>
-                        <div class="modal-footer" id="confirmFooter">
-                            <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">Imprimer</a>
-                            <button type="submit" class="btn btn-primary">Accepter</button>
+                        <div class="modal-footer">
+                            <a href="{{ route('imprimerDemande') }}" id="impressionantes" class="btn btn-success">Imprimer</a>
                         </div>
                     </div>
                 </form>

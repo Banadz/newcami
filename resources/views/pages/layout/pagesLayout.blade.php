@@ -13,6 +13,7 @@
         <meta name="getAgents" content="{{ route('allAgent') }}">
         <meta name="controlQual-route" content="{{ route('controlQuant') }}">
         <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
+        <meta name="user-matricule" content="{{ $user = Auth::user()->MATRICULE; }}">
         <meta name="user-info" content="{{ Auth::user(); }}">
 
         {{-- DEMANDE URL --}}
@@ -21,6 +22,7 @@
         <meta name="demande-waiting" content="{{ route('demande') }}">
         <meta name="demande-denied" content="{{ route('deniedDemande') }}">
         <meta name="demande-recieved" content="{{ route('LivredDemande') }}">
+        <meta name="demande-print" content="{{ route('imprimerDemande') }}">
 
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />

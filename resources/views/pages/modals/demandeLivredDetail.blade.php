@@ -42,7 +42,7 @@
                                                 class="table table-striped table-bordered nowrap">
                                             <thead>
                                             <tr>
-                                                <th>N°1</th>
+                                                <th>N°</th>
                                                 <th>Article</th>
                                                 <th>Stock</th>
                                                 <th>Qté demandé</th>
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">Imprimer</a>
+                            <a href="{{ route('imprimerDemande') }}" id="impressionante" class="btn btn-success">Imprimer</a>
                         </div>
                     </div>
                 </form>
