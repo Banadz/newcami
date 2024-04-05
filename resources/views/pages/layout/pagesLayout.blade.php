@@ -30,6 +30,8 @@
         @yield('secialCss')
 
         <link rel="stylesheet" href="modules/.personnel/css/vibreur.css">
+
+        <link rel="stylesheet" href="modules/.personnel/css/vibreur.css">
         <link rel="stylesheet" href="modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="modules/summernote/dist/summernote-bs4.css">
         <link rel="stylesheet" href="modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
@@ -50,6 +52,7 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        {{-- PRELOADER --}}
         {{-- PRELOADER --}}
 
         <div class="wrapper">
@@ -96,6 +99,7 @@
         {{-- MY JS --}}
 
         {{-- <script src="modules/.personnel/Register.js"></script> --}}
+        <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         <script src="modules/.personnel/sweetalert/sweetalert.min.js"></script>
         @yield('specialScript')
     </body>

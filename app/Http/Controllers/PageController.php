@@ -155,6 +155,16 @@ class PageController extends Controller
         return view('pages.profile', ['agent'=> $agent]);
     }
 
+
+
+    public function userProfil(){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+
+        return view('pages.profile', ['agent'=> $agent]);
+    }
+
     public function pageCategorie(){
         $categories = Categorie::with('compte')->get();
         $comptes = Compte::get();
@@ -182,6 +192,13 @@ class PageController extends Controller
             ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'En attente')
             ->withCount('demandes')->get();
         }
+
+        // Vérifier le type d"Agent...
+        if ($user->TYPE == "User" ){
+            $references = Reference::with('demandes.article', 'agent.division')
+            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'En attente')
+            ->withCount('demandes')->get();
+        }
         foreach ($references as $dd) {
             $carbonDateDEB = Carbon::parse($dd->DATE_DEMANDE);
             $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
@@ -191,6 +208,11 @@ class PageController extends Controller
         ]);
     }
     public function pagedemandeLivring(){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+
         $user = Auth::user();
         $matricule = $user->MATRICULE;
         $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();

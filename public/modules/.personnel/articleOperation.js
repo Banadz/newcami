@@ -21,6 +21,16 @@ $(document).ready(function(){
     //         <a href="#" class="multiArticleDelete" title="Supprimer"><i class="ik ik-trash-2"></i></a>
     //     </div>`
     // ]).draw();
+    // fichierArticle.row.add([
+    //     '49',
+    //     'Brosse pour lavage carreaux',
+    //     'Lave pont avec manche (A8F)',
+    //     'Nombre',
+    //     `<div class="table-actions">
+    //         <a href="#" class="multiArticleUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
+    //         <a href="#" class="multiArticleDelete" title="Supprimer"><i class="ik ik-trash-2"></i></a>
+    //     </div>`
+    // ]).draw();
     // INSERTION..
 
     $('#compte').on('change' , function(){

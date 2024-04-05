@@ -49,6 +49,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" href="livringDemande">En attente de livarison</a>
+                                        <a class="nav-link active" href="livringDemande">En attente de livarison</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="LivredDemande">Livré(s)</a>
@@ -93,6 +94,21 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                        <tr>
+                                            <td>{{ $reference->REFERENCE }}</td>
+                                            <td>{{ $reference->agent->MATRICULE }} | {{ $reference->agent->PRENOM }}</td>
+                                            <td>{{ $reference->agent->FONCTION }} | {{ $reference->agent->division->CODE_DIVISION }}</td>
+                                            <td>{{ $reference->DATE_DEMANDE }}</td>
+                                            <td>{{ $reference->demandes_count }} demande(s)</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <a href="{{ route('sameRefDemande') }}" class="detail" data-toggle="modal" data-target="#demandeConfirm" title="Details"><i class="ik ik-info"></i></a>
+                                                </div>
+                                            </td>
+
+
+
+                                        </tr>
 
                                         @endforeach
                                     @endif
@@ -108,6 +124,7 @@
 
     @section('updateModal')
         {{-- Update Modals --}}
+        @include('pages.modals.demandeConfirm')
         @include('pages.modals.demandeConfirm')
     @endsection
 
