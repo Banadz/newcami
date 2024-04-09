@@ -23,11 +23,12 @@
         <meta name="demande-denied" content="{{ route('deniedDemande') }}">
         <meta name="demande-recieved" content="{{ route('LivredDemande') }}">
         <meta name="demande-print" content="{{ route('imprimerDemande') }}">
+        <meta name="demande-verify" content="{{ route('verificationDemande') }}">
 
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        {{-- <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet"> --}}
 
         @yield('secialCss')
 
@@ -85,7 +86,7 @@
         {{-- IMPORT --}}
         {{-- @include('pages.partition.config') --}}
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        {{-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> --}}
         <script>window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
         <script src="modules/popper.js/dist/umd/popper.min.js"></script>
         <script src="modules/bootstrap/dist/js/bootstrap.min.js"></script>

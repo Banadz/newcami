@@ -34,7 +34,11 @@
                             </a>
                             <a href="#" class="media">
                                 <span class="d-flex">
-                                    <img src="http://127.0.0.1:8000/images/users/1.jpg" class="rounded-circle" alt="">
+                                    @if ($user->PHOTO)
+                                        <img src="images/profil/{{ $user->PHOTO }}" class="rounded-circle" alt="icon-profil">
+                                    @else
+                                        <img src="images/profil/user.png" class="rounded-circle"  alt="icon-profil"/>
+                                    @endif
                                 </span>
                                 <span class="media-body">
                                     <span class="heading-font-family media-heading">Steve Smith</span>
@@ -60,7 +64,13 @@
                 </button>
                 @endif
                 <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="http://127.0.0.1:8000/images/user.jpg" alt=""></a>
+                    <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if ($user->PHOTO)
+                            <img class="avatar" src="images/profil/{{ $user->PHOTO }}" alt="icon-profil">
+                        @else
+                            <img class="avatar" src="images/profil/user.png" alt="icon-profil"/>
+                        @endif
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="{{ route('profil') }}"><i class="ik ik-user dropdown-icon"></i> Profil</a>
                         <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i> Paramètres</a>

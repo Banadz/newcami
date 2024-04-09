@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\Agent as Authenticatable;
 use App\Models\Division;
+use App\Models\Reference;
 
 class Agent extends Authenticatable
 {
@@ -18,8 +19,8 @@ class Agent extends Authenticatable
     {
         return $this->belongsTo(Division::class, 'CODE_DIVISION', 'CODE_DIVISION');
     }
-    public function demandes(){
-        return $this->hasMany(Demande::class, 'MATRICULE', 'MATRICULE');
+    public function references(){
+        return $this->hasMany(Reference::class, 'MATRICULE', 'MATRICULE');
     }
     public function materiels(){
         return $this->hasMany(Materiel::class, 'MATRICULE', 'MATRICULE');

@@ -89,6 +89,7 @@
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="{{ route('sameRefDemande') }}" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
+                                                    <a href="{{ route('DeleteDemande') }}" class="supprimerD" title="Supprimer"><i class="ik ik-trash"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

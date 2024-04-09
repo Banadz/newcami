@@ -15,6 +15,8 @@
         <meta name="controlQual-route" content="{{ route('controlQuant') }}">
         <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
         <meta name="user-info" content="{{ Auth::user(); }}">
+        <meta name="user-matricule" content="{{ $user = Auth::user()->MATRICULE; }}">
+        
 
         {{-- DEMANDE URL --}}
         <meta name="demande-livring" content="{{ route('livringDemande') }}">
@@ -22,10 +24,12 @@
         <meta name="demande-waiting" content="{{ route('demande') }}">
         <meta name="demande-denied" content="{{ route('deniedDemande') }}">
         <meta name="demande-recieved" content="{{ route('LivredDemande') }}">
+        <meta name="demande-print" content="{{ route('imprimerDemande') }}">
+        <meta name="demande-verify" content="{{ route('verificationDemande') }}">
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        {{-- <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet"> --}}
 
         <link rel="stylesheet" href="modules/.personnel/css/vibreur.css">
         <link rel="stylesheet" href="modules/select2/dist/css/select2.min.css">
@@ -175,7 +179,11 @@
                                                     </div>
                                                     <div class="slider-nav text-center">
                                                         <div class="card-body template-demo">
-                                                            <a href="demande" id="cancel" class="btn btn-warning cancel">Annuler</a>
+                                                            @if (Auth::user()->TYPE == "User")
+                                                            <a href="dashbord" id="cancel" class="btn btn-warning cancelDem">Annuler</a>
+                                                            @else
+                                                            <a href="demande" id="cancel" class="btn btn-warning cancelDem">Annuler</a>
+                                                            @endif
                                                             <button type="submit" target="{{route('controlQuant')}}" id="add" class="btn btn-info sub">Ajouter</button>
                                                         </div>
                                                     </div>
@@ -242,7 +250,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-success">Valider</button>
-                                                    <button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+                                                    <button type="button" class="btn btn-warning cancelDem" data-dismiss="modal">Annuler</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -265,7 +273,7 @@
         {{-- @include('pages.partition.config') --}}
 
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        {{-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> --}}
         <script>window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
         <script src="modules/popper.js/dist/umd/popper.min.js"></script>
         <script src="modules/bootstrap/dist/js/bootstrap.min.js"></script>

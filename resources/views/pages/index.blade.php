@@ -7,6 +7,9 @@
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="recolte-demande" content="{{ route('demandeDivision') }}">
+        
 
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
@@ -53,7 +56,7 @@
                 <div class="main-content">
                     <div class="container-fluid">
                         <div class="row clearfix">
-                            <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
                                 <a href="{{ route('demande') }}">
                                     <div class="widget">
                                         <div class="widget-body">
@@ -82,42 +85,42 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
                                 <a href="{{ route('livringDemande') }}">
                                     <div class="widget">
                                         <div class="widget-body">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="state">
-                                                    <h6>Livraison</h6>
-                                                    <h2>{{ $dashboard['LIVRING'] }}</h2>
+                                                    <h6>Traité(s)</h6>
+                                                    <h2>{{ $dashboard['LIVRING'] + $dashboard['DENIED'] }}</h2>
                                                 </div>
                                                 <div class="icon">
                                                     <i class="ik ik-shopping-cart"></i>
                                                 </div>
                                             </div>
-                                            <small class="text-small mt-10 d-block">En cours de livraison</small>
+                                            <small class="text-small mt-10 d-block">Demande(s) traité(s) suite à la validation</small>
                                         </div>
                                         <div class="progress progress-sm">
                                             @if ($dashboard['ALL'] == 0)
-                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] }}" 
+                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] + $dashboard['DENIED'] }}" 
                                                 aria-valuemin="0" aria-valuemax="100" 
                                                 style="width: 0%;"></div>
                                             @else
-                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] }}" 
+                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ $dashboard['LIVRING'] + $dashboard['DENIED'] }}" 
                                                 aria-valuemin="0" aria-valuemax="{{ $dashboard['ALL'] }}" 
-                                                style="width: {{ ($dashboard['LIVRING'] / $dashboard['ALL']) * 100}}%;"></div>
+                                                style="width: {{ (($dashboard['LIVRING'] + $dashboard['DENIED']) / $dashboard['ALL']) * 100}}%;"></div>
                                             @endif
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
                                 <a href="{{ route('LivredDemande') }}">
                                     <div class="widget">
                                         <div class="widget-body">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="state">
-                                                    <h6>Reçu</h6>
+                                                    <h6>Livré(s)</h6>
                                                     <h2>{{ $dashboard['LIVRED'] }}</h2>
                                                 </div>
                                                 <div class="icon">
@@ -140,7 +143,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
+                            {{-- <div class="col-lg-3 col-md-6 col-sm-12">
                                 <a href="{{ route('deniedDemande') }}">
                                     <div class="widget">
                                         <div class="widget-body">
@@ -168,15 +171,26 @@
                                         </div>
                                     </div>
                                 </a>
-                            </div>
+                            </div> --}}
                             
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="card" style="min-height: 422px;">
-                                    <div class="card-header"><h3>Donut chart</h3></div>
+                                    <div class="card-header"><h3>Taux de demande(%)</h3></div>
                                     <div class="card-body">
                                         <div id="c3-donut-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-xl-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>Constat consommation journalière</h3>
+                                    </div>
+                                    <div class="card-block text-center">
+                                        <div id="line_chart" class="chart-shadow" style="height:400px"></div>
                                     </div>
                                 </div>
                             </div>
@@ -214,6 +228,19 @@
 
         <script src="js/widgets.js"></script>
         <script src="js/charts.js"></script>
+
+        <script src="js/chart-amcharts.js"></script>
+
+        <script src="modules/screenfull/dist/screenfull.js"></script>
+        <script src="modules/amcharts3/amcharts/amcharts.js"></script>
+        <script src="modules/amcharts3/amcharts/gauge.js"></script>
+        <script src="modules/amcharts3/amcharts/serial.js"></script>
+        <script src="modules/amcharts3/amcharts/themes/light.js"></script>
+        <script src="modules/amcharts3/amcharts/plugins/animate/animate.js"></script>
+        <script src="modules/amcharts3/amcharts/pie.js"></script>
+        <script src="modules/ammap3/ammap/ammap.js"></script>
+        <script src="modules/ammap3/ammap/maps/js/usaLow.js"></script>
+        
 
     </body>
 </html>

@@ -41,7 +41,7 @@ class PageController extends Controller
         $code_service = $agent->division->service->CODE_SERVICE;
         
         $nouveau = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
-        ->where('ETAT', '=', 'En attente')->count());
+        ->where('ETAT', '=', 'Waiting')->count());
 
         $refus = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)
         ->where('ETAT', '=', 'Refused')->count());
@@ -55,7 +55,7 @@ class PageController extends Controller
         $total = $this->formatNumber(Reference::where('MATRICULE', '=', $matricule)->count());
 
         if ($user->TYPE == $type2 || $user->TYPE == "Super Admin"){
-            $nouveau = $this->formatNumber(Reference::where('ETAT', '=', 'En attente')
+            $nouveau = $this->formatNumber(Reference::where('ETAT', '=', 'Waiting')
             ->where('CODE_SERVICE', '=', $code_service)->count());
 
             $refus = $this->formatNumber(Reference::where('CODE_SERVICE', '=', $code_service)
@@ -173,13 +173,13 @@ class PageController extends Controller
         $code_service = $agent->division->service->CODE_SERVICE;
 
         $references = Reference::with('demandes.article', 'agent.division')
-        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'En attente')
+        ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Waiting')
         ->withCount('demandes')->get();
 
         // Vérifier le type d"Agent...
         if ($user->TYPE == "User" ){
             $references = Reference::with('demandes.article', 'agent.division')
-            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'En attente')
+            ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Waiting')
             ->withCount('demandes')->get();
         }
         foreach ($references as $dd) {

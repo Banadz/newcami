@@ -195,7 +195,7 @@ class InsertionController extends Controller
 
         $reference->REFERENCE = $ref;
         $reference->MATRICULE = $id;
-        $reference->ETAT = 'En attente';
+        $reference->ETAT = 'Waiting';
         $reference->DATE_DEMANDE = Carbon::now();
         $reference->VALIDATION = null;
         $reference->LIVRAISON = null;
@@ -214,7 +214,7 @@ class InsertionController extends Controller
             $demande->QUANTITE = $ligne[3];
             $demande->STOCK = $article->EFFECTIF;
             $demande->UNITE = $article->UNITE;
-            $demande->ETAT_DEMANDE = 'En attente';
+            $demande->ETAT_DEMANDE = 'Waiting';
             // ...
 
             // Enregistrez le modèle dans la base de données

@@ -36,7 +36,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
-                            <img src="images/profil/{{ $agent->PHOTO }}" class="rounded-circle" width="150" />
+                            @if ($agent->PHOTO)
+                                <img src="images/profil/{{ $agent->PHOTO }}" class="rounded-circle" width="150" />
+                            @else
+                                <img src="images/profil/user.png" class="rounded-circle" width="150" />
+                            @endif
                             <h4 class="card-title mt-10">{{ $agent->PSEUDO }}</h4>
                             <p class="text-center d-md-inline-block">{{ $agent->FONCTION }} | {{ $agent->CODE_DIVISION }} | {{ $agent->division->CODE_SERVICE }}</p>
                         </div>

@@ -142,6 +142,9 @@ Route::middleware([
     Route::post('/recupDetenteur', [getController::class, 'GroupDetenteur'])->name('recupDetenteur');
     Route::post('/getCondamnation',[getController::class, 'SearchCondemnation'])->name('getCondamnation');
 
+
+    Route::POST('/DeleteDemande', [DeleteController::class, 'Demande'])->name('DeleteDemande');
+    Route::post('/verificationDemande', [GetController::class, 'VerifyDemande'])->name('verificationDemande');
     Route::post('/valideDemande', [InsertionController::class, 'Demande'])->name('valideDemande');
     Route::post('/validationDemande', [InsertionController::class, 'validerDem'])->name('validationDemande');
     Route::post('/refuseDemande', [InsertionController::class, 'refuserDem'])->name('refuseDemande');
@@ -160,6 +163,7 @@ Route::middleware([
     Route::post('/sameRefDemande', [getController::class, 'GroupDemande'])->name('sameRefDemande');
 
     Route::post('/allData', [getController::class, 'allData'])->name('allData');
+    Route::post('/demandeDivision', [getController::class, 'demandeDivision'])->name('demandeDivision');
 
     Route::post('/importAgent', [ImportController::class, 'ImportAgent'])->name('importerAgent');
     Route::post('/insertionMultipleAgent', [InsertionController::class, 'multiAgent'])->name('insererMutliAgent');

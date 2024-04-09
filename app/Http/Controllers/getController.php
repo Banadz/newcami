@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Categorie;
 use App\Models\Compte;
 use App\Models\Demande;
+use App\Models\Reference;
 use App\Models\Division;
 use App\Models\Materiel;
 use App\Models\Service;
@@ -187,6 +188,35 @@ class getController extends Controller
             'articles' => $articles
         ]);
     }
+    public function demandeDivision(Request $request){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+
+        $nombreDemandesParDivision = Division::with(['agents.references'])
+        ->where('CODE_SERVICE', '=', $code_service )->get()
+        ->map(function ($division) {
+            $nombreReferences = 0;
+    
+            foreach ($division->agents as $agent) {
+                $nombreReferences += $agent->references->count();
+            }
+    
+            return [
+                'CODE_DIVISION' => $division->CODE_DIVISION,
+                'nombre_references' => $nombreReferences,
+            ];
+        });
+        // $nombreDemandesParDivision = Division::with(['agents.references'])
+        // ->get();
+
+        // $demandes = Division::with('agents.references')->groupBy('divisinon.agents.references.CODE_DIVISION')->count();
+        return response()->json([
+            'success' => true,
+            'demandes' => $nombreDemandesParDivision
+        ]);
+    }
 
     public function GroupDemande(Request $request){
         $user = Auth::user();
@@ -201,6 +231,19 @@ class getController extends Controller
         ]);
     }
 
+    public function VerifyDemande(Request $request){
+        $user = Auth::user();
+        $type = $user->TYPE;
+
+        $ref = $request->input('ref');
+        $demande = Reference::with('demandes')->where('REFERENCE', '=', $ref)->first();
+        $statut = $demande->ETAT;
+        return response()->json([
+            'success' => true,
+            'statut' => $statut
+        ]);
+    }
+
     public function SearchCondemnation(Request $request){
         $materiel = Materiel::with('origine.reference.service', 'nomenclature', 'categorie.compte', 'sortie')
                     ->where('id', '=', $request->input('id'))->first();
@@ -211,6 +254,19 @@ class getController extends Controller
         return response()->json([
             'success' => true,
             'materiel' => $materiel
+        ]);
+    }
+
+    public function Demande(Request $request){
+        $user = Auth::user();
+        $type = $user->TYPE;
+        $ref = $request->input('ref');
+        $rdemande = Reference::where('REFERENCE','=', $ref);
+        // $rdemande->delete();
+
+        return response()->json([
+            'success' => true,
+            'ref' => $ref
         ]);
     }
 }

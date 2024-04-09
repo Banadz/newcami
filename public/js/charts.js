@@ -1,3 +1,5 @@
+const recolteUrl = document.querySelector('meta[name="recolte-demande"]').getAttribute('content');
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 (function($) {
   'use strict';
   var c3LineChart = c3.generate({
@@ -168,8 +170,8 @@
     bindto: '#c3-donut-chart',
     data: {
       columns: [
-        ['data1', 30],
-        ['data2', 120],
+        ['Structure1', 35],
+        ['Structure2', 75],
       ],
       type: 'donut',
       onclick: function(d, i) {
@@ -183,7 +185,17 @@
       }
     },
     color: {
-      pattern: ['rgba(88,216,163,1)', 'rgba(4,189,254,0.6)', 'rgba(237,28,36,0.6)']
+      pattern: [
+        'rgba(88,216,163,1)',
+        'rgba(4,189,254,0.6)',
+        'rgba(237,28,36,0.6)',
+        'rgba(27,58,188,0.6)',
+        'rgba(44,120,12,0.6)',
+        'rgba(200,222,30,0.6)',
+        'rgba(2,2,2,0.6)',
+        'rgba(180,240,20,0.6)',
+        'rgba(255,155,50,0.6)'
+      ]
     },
     padding: {
       top: 0,
@@ -192,28 +204,57 @@
       left: 0,
     },
     donut: {
-      title: "Iris Petal Width"
+      title: "DIVISIONS"
     }
   });
+  $.ajax({
+    type:'POST',
+    url: recolteUrl,
+    data:{
+        _token:csrfToken,
+    },
+    success:function(response, statut){
+        if (response.success){
+          const columns = [
+            ["Income", 5],
+            ["Outcome",35],
+            ["Revenue",55],
+          ]
+          const adapteResponse = {}
+          $.each(response.demandes, function(i,v){
+            adapteResponse[v.CODE_DIVISION] = v.nombre_references
+          })
+          const alignedData = Object.entries(adapteResponse).map(([key, value]) => [key, value]);
 
-  setTimeout(function() {
-    c3DonutChart.load({
-      columns: [
-        ["setosa", 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3, 0.2, 0.4, 0.2, 0.5, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2, 0.2, 0.4, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2],
-        ["versicolor", 1.4, 1.5, 1.5, 1.3, 1.5, 1.3, 1.6, 1.0, 1.3, 1.4, 1.0, 1.5, 1.0, 1.4, 1.3, 1.4, 1.5, 1.0, 1.5, 1.1, 1.8, 1.3, 1.5, 1.2, 1.3, 1.4, 1.4, 1.7, 1.5, 1.0, 1.1, 1.0, 1.2, 1.6, 1.5, 1.6, 1.5, 1.3, 1.3, 1.3, 1.2, 1.4, 1.2, 1.0, 1.3, 1.2, 1.3, 1.3, 1.1, 1.3],
-        ["virginica", 2.5, 1.9, 2.1, 1.8, 2.2, 2.1, 1.7, 1.8, 1.8, 2.5, 2.0, 1.9, 2.1, 2.0, 2.4, 2.3, 1.8, 2.2, 2.3, 1.5, 2.3, 2.0, 2.0, 1.8, 2.1, 1.8, 1.8, 1.8, 2.1, 1.6, 1.9, 2.0, 2.2, 1.5, 1.4, 2.3, 2.4, 1.8, 1.8, 2.1, 2.4, 2.3, 1.9, 2.3, 2.5, 2.3, 1.9, 2.0, 2.3, 1.8],
-      ]
-    });
-  }, 1500);
+          // console.log(alignedData)
+            setTimeout(function() {
+              c3DonutChart.load({
+                columns: alignedData
+              });
+            }, 1500);
+        }else{
+            swal("Problème de connection", `Impossible de se connecter au serveur à l’adresse `+window.location+`.`, {
+                icon : "Echec",
+                buttons: {
+                    confirm: {
+                        className : 'btn btn-danger'
+                    }
+                },
+            })
+        }
+    }
+
+})
+  
 
   setTimeout(function() {
     c3DonutChart.unload({
-      ids: 'data1'
+      ids: 'Structure1'
     });
     c3DonutChart.unload({
-      ids: 'data2'
+      ids: 'Structure2'
     });
   }, 2500);
-
+  
 
 })(jQuery);

@@ -3,6 +3,7 @@ $(document).ready(function(){
     const livredUrl = document.querySelector('meta[name="demande-recieved"]').getAttribute('content');
     const printUrl = document.querySelector('meta[name="demande-print"]').getAttribute('content');
     const livringUrl = document.querySelector('meta[name="demande-livring"]').getAttribute('content');
+    const verifyUrl = document.querySelector('meta[name="demande-verify"]').getAttribute('content');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     const controlQual = document.querySelector('meta[name="controlQual-route"]').getAttribute('content')
     const user = document.querySelector('meta[name="user-type"]').getAttribute('content')
@@ -35,7 +36,11 @@ $(document).ready(function(){
         "pageLength":3,
     });
 
-    $('#demandeW').DataTable()
+    $('#demandeW').DataTable({
+        "searching": true,
+        "lengthMenu":[10, 20, 50, 100],
+        "pageLength":10,
+    })
     $('#demandeL').DataTable()
     // INSERTION..
 
@@ -143,6 +148,32 @@ $(document).ready(function(){
 
     //     })
     // })
+    $('body').on('click', '.cancelDem', function(kk){
+        kk.preventDefault()
+        swal('Confirmation', `Voullez vous vraiment annuler la demande ?`,{
+            icon : "warning",
+            buttons: {
+                confirm: {
+                    text : 'Oui',
+                    className : 'btn btn-danger'
+                },
+                cancel: {
+                    visible: true,
+                    text:'Annuler',
+                    className: 'btn btn-info'
+                }
+            },
+        }).then((Delete) => {
+            if (Delete) {
+                if (user == 'User'){
+                    window.location.href = 'dashboard'
+                }else{
+                    window.location.href = 'demande'
+                }
+            }
+        })
+    })
+
     $('#id_categorie').on('change' , function(){
         $('#defaultCat').remove()
         const id_categorie = $("#id_categorie option:selected").val();
@@ -1062,20 +1093,23 @@ $(document).ready(function(){
         impressionDemande(reference, table, btn)
     })
 
-    $('body').on('click', "#impressionant", function(ko){
+    $('body').on('click', ".supprimerD", function(ko){
         ko.preventDefault()
-        var reference = $('#ref_dem').attr('title')
-        const btn = $(this)
-        const table = livringData
-        impressionDemande(reference, table, btn)
+        $tr = $(this).closest('tr');
+        var data =  $tr.children("td").map(function(){
+            return $(this).text()
+        }).get();
+        var reference = data[0]
+        const deletUrl = $(this).attr('href')
+        verificationDemande(reference, deletUrl)
     })
-    $('body').on('click', "#impressionante", function(ko){
-        ko.preventDefault()
-        var reference = $('#ref_dem').attr('title')
-        const btn = $(this)
-        const table = $('#livred_dem').DataTable()
-        impressionDemande(reference, table, btn)
-    })
+    // $('body').on('click', "#impressionante", function(ko){
+    //     ko.preventDefault()
+    //     var reference = $('#ref_dem').attr('title')
+    //     const btn = $(this)
+    //     const table = $('#livred_dem').DataTable()
+    //     impressionDemande(reference, table, btn)
+    // })
     $('body').on('click', "#impressionantes", function(ko){
         ko.preventDefault()
         var reference = $('#ref_dem').attr('title')
@@ -1106,6 +1140,90 @@ $(document).ready(function(){
             window.location.href = url+"?"+getrefrence+"&&"+getdata
 
         }
+    }
+    function verificationDemande(reference, link){
+        $.ajax({
+            type:'POST',
+            url: verifyUrl,
+            data:{
+                _token:csrfToken,
+                ref:reference
+            },
+            success:function(response, statut){
+                if (response.success){
+                    const stat = response.statut
+                    if (stat == 'Waiting'){
+                        swal('Confirmation', `Voullez vous vraiment supprimer la demande ?`,{
+                            icon : "warning",
+                            buttons: {
+                                confirm: {
+                                    text : 'Oui',
+                                    className : 'btn btn-danger'
+                                },
+                                cancel: {
+                                    visible: true,
+                                    text:'Annuler',
+                                    className: 'btn btn-info'
+                                }
+                            },
+                        }).then((Delete) => {
+                            if (Delete) {
+                                $.ajax({
+                                    type:'POST',
+                                    url: link,
+                                    data:{
+                                        _token:csrfToken,
+                                        ref:reference
+                                    },
+                                    success:function(response, statut){
+                                        if (response.success){
+                                            swal('Succès', `Demande ref° `+ response.ref +` supprimé avec succès`,{
+                                                icon : "success",
+                                                buttons: {
+                                                    confirm: {
+                                                        text : 'Oui',
+                                                        className : 'btn btn-info'
+                                                    }
+                                                },
+                                            }).then((Delete) => {
+                                                if (Delete) {
+                                                    window.location.reload()
+                                                }else{
+                                                    window.location.reload()
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }else{
+                                swal.close()
+                            }
+                        })
+                    }else{
+                        console.log(stat)
+                        // swal('Echèc', `La demande est déjà en cours de validation`,{
+                        //     icon : "error",
+                        //     buttons: {
+                        //         confirm: {
+                        //             text : 'Oui',
+                        //             className : 'btn btn-danger'
+                        //         }
+                        //     },
+                        // })
+                    }
+                }else{
+                    swal('Echèc', `Vérifier votre connexion et réessayer plutard`,{
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    })
+                }
+            }
+
+        })
     }
 
 })
