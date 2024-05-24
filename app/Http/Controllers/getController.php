@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class getController extends Controller
 {
@@ -79,10 +80,22 @@ class getController extends Controller
         $code_service = $agent[0]->division?->CODE_SERVICE;
 
         $divisions = Division::where('CODE_SERVICE', '=', $code_service)->get();
+
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+        
+        $important = $user->PASSWORD;
+        if (Hash::check('0000', $important)) {
+            $match = true;
+        } else {
+            $match = false;
+        }
+
         return response()->json([
             'success' => true,
             'agent' => $agent,
-            'divisions' => $divisions
+            'divisions' => $divisions,
+            'newUser' => $match
         ]);
     }
     public function allAgent(Request $request){
@@ -172,6 +185,22 @@ class getController extends Controller
         ]);
     }
 
+    public function QuantiteValidation(Request $request){
+        $id = $request->input('article');
+        $article = Article::where('id', '=', $id)->get();
+        $cumulus = Demande::where('id_article', '=', $id)
+                            ->where('ETAT_DEMANDE', '=', 'Livring')->get();
+        $qcumulus = 0;
+        foreach ($cumulus as $cumulu) {
+            $qcumulus = $qcumulus + $cumulu->QUANTITE_ACC;
+        }
+        return response()->json([
+            'success' => true,
+            'article' => $article,
+            'qcumulus' => $qcumulus
+        ]);
+    }
+
     public function allData(Request $request){
 
         $user = Auth::user();
@@ -256,17 +285,93 @@ class getController extends Controller
             'materiel' => $materiel
         ]);
     }
-
-    public function Demande(Request $request){
+    
+    public function searchDem(Request $request)
+    {
         $user = Auth::user();
-        $type = $user->TYPE;
-        $ref = $request->input('ref');
-        $rdemande = Reference::where('REFERENCE','=', $ref);
-        // $rdemande->delete();
+        $matricule = $user->MATRICULE;
+        $agent = Agent::with('division.service')->where('MATRICULE', $matricule)->first();
+        $code_service = $agent->division->service->CODE_SERVICE;
+
+        $dates = $request->input('date');
+        $typedate = $request->input('typedate');
+        $endDate = $request->input('endDate');
+        $structure = $request->input('structure');
+        $article = $request->input('article');
+
+        $query = Reference::query();
+        $query->with('demandes.article','agent.division');
+        $query->where('CODE_SERVICE', '=', $code_service);
+        $query->where('ETAT', '=', 'Waiting');
+        $query->withCount('demandes');
+
+        if ($dates) {
+            if ($typedate == 'UNIQUE'){
+                $query->whereDate('DATE_DEMANDE', '=', $dates);
+            }
+            if ($typedate == 'START'){
+                $query->whereDate('DATE_DEMANDE', '>=', $dates);
+                if ($endDate){
+                    $query->whereDate('DATE_DEMANDE', '<=', $endDate);
+                }
+            }
+            if ($typedate == 'END'){
+                $query->whereDate('DATE_DEMANDE', '<=', $dates);
+            }
+        }
+
+        // Ajouter d'autres conditions si nécessaire
+        if ($structure) {
+            $query->whereHas('agent.division', function($conditionnal) use ($structure){
+                $conditionnal->where('CODE_DIVISION', '=', $structure);
+            });
+        }
+        if ($article) {
+            $query->whereHas('demandes.article', function($condition) use ($article){
+                $condition->where('DESIGNATION', 'LIKE', "%$article%");
+            });
+        }
+
+        // Exécuter la requête et récupérer les résultats
+        
+        if ($user->TYPE == "User"){
+            $query->where('MATRICULE', '=', $matricule);
+        }
+        $references = $query->get();
+
+        foreach ($references as $dd) {
+            $carbonDateDEB = Carbon::parse($dd->DATE_DEMANDE);
+            $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
+        }
+        
 
         return response()->json([
-            'success' => true,
-            'ref' => $ref
+            'references' => $references
         ]);
     }
+
+    
+
+    public function verifypass(Request $request){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+
+        $oldpass = $request->input('oldpass');
+        
+        $important = $user->PASSWORD;
+        
+
+        if (Hash::check($oldpass, $important)) {
+            return response()->json([
+                'success' => true,
+                'match' => true
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'match' => false
+            ]);
+        }
+    }
+
 }

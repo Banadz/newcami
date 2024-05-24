@@ -127,7 +127,7 @@
 
                     <div class="align-items-end">
                         <div class="col-md-12">
-                            <p style="text-align: center;"> <strong>BON de COMMANDE</strong></p>
+                            <p style="text-align: center;"> <strong>BON de LIVRAISON</strong></p>
                             <p style="line-height: 10px;">
                                 <strong style="text-decoration: underline">Structure</strong> : {{$reference->agent->division->LABEL_DIVISION}} ({{$reference->agent->division->CODE_DIVISION}})
                             </p>
@@ -150,7 +150,7 @@
                                         <th class="headbordure" style= "width=18%;">Unité</th>
                                         <th class="headbordure" style= "width=20%;">Quantité demandé</th>
                                         <th class="headbordure" style= "width=20%;">Quantité accordé</th>
-                                        {{-- <th class="headbordure" style= "width=20%;">Quantité livré</th> --}}
+                                        <th class="headbordure" style= "width=20%;">Quantité Livré</th>
                                     </tr>
                                 </thead>
                                 <tbody class="tboded">
@@ -165,7 +165,7 @@
                                         <td class="cellbordure" style= "width=18%;" style="text-align:center;">{{$demande->article->UNITE}}</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE}}</td>
                                         <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_ACC}}</td>
-                                        {{-- <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_LIV}}</td> --}}
+                                        <td class="cellbordure" style= "width=25%;" style="text-align:center;">{{$demande->QUANTITE_LIV}}</td>
                                     </tr>
                                     @php
                                         $i= $i+1
@@ -182,18 +182,13 @@
                             <table class="tbFoot">
                                 <thead class="theaded">
                                     <tr clss="tred">
-                                        <th class="headbordure" style = "width=75%;" colspan="2">Demande</th>
-                                        <th class="headbordure" style= "width=20%;">Validation</th>
-                                        {{-- <th class="headbordure" style= "width=72%;"colspan="2">Livraison</th> --}}
+                                        <th class="headbordure" style= "width=72%;"colspan="2">Livraison</th>
                                     </tr>
                                 </thead>
                                 <tbody class="tboded">
                                         <tr class="tred">
-                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;"><p style="margin-left: 25px;margin-right: 25px;">Demandeur</p></td>
-                                            <td class="cellbordure" style= "width=15%;padding-bottom:90px;">Le Dépositaire Comptable</td>
-                                            <td class="cellbordure" style= "width=45%;padding-bottom:90px;"><p style="margin-left: 20px;margin-right: 20px;">Chef(SRSPHM)</p></td>
-                                            {{-- <td class="cellbordure" style= "width=30%;padding-bottom:90px;">Le Dépositaire Comptable</td>
-                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;"><p style="margin-left: 55px;margin-right: 55px;"></p>Agent</td> --}}
+                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;">Le Dépositaire Comptable</td>
+                                            <td class="cellbordure" style= "width=30%;padding-bottom:90px;"><p style="margin-left: 55px;margin-right: 55px;"></p>Agent</td>
                                         </tr>
                                 </tbody>
                             </table>

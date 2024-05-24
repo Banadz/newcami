@@ -61,6 +61,64 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-header justify-content-between">
+                        <div class="card">
+                            <a href="#" class="moreOptions"><div class="card-header" ><h3>Option de Recherches</h3></div></a>
+                            <div class="card-body searchOption">
+                                <ul class="nav nav-pills nav-fill">
+                                    <li class="nav-item">
+                                        <form action="" id="searching" method="post">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="date">Date</label>
+                                                        <div class="input-group input-group-dropdown">
+                                                            <input type="date" class="form-control" id="dating" aria-label="Text input with dropdown button">
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-button" 
+                                                                id="dropdownButton1" data-toggle="dropdown" aria-haspopup="true" 
+                                                                aria-expanded="false" data-value="U">Unique <i class="ik ik-chevron-down"></i></button>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item" href="#!" data-value="Unique">Unique</a>
+                                                                    <a class="dropdown-item" href="#!" data-value="Début">Début</a>
+                                                                    <a class="dropdown-item" href="#!" data-value="Fin">Fin</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group input-group-dropdown" id="newInput" style="display: none;">
+                                                            <input type="date" class="form-control" id="endPoint" aria-label="Text input with dropdown button">
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-secondary">Fin</button>
+                                                            </div>
+                                                        </div>
+                                                        {{-- <input type="date" class="form-control" name="" id="date"> <i ></i> --}}
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="quantite">Structure</label>
+                                                            <select class="form-control select2" name="code_service" id="structuration">
+                                                                <option value="0" selected>-- Aucun Structure choisi --</option>
+                                                                @foreach ($divisions as $division)
+                                                                <option value="{{$division->CODE_DIVISION }}">{{$division->CODE_DIVISION}} | {{$division->LABEL_DIVISION}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="article">Article</label>
+                                                        <input type="text" class="form-control" name="" id="article" placeholder="Choisir un article">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <button type="button" class="btn btn-outline-secondary btn-rounded" id="startSearch">Rechercher <i class="ik ik-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="dt-responsive">
                             <table id="demandeW"
@@ -89,7 +147,9 @@
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="{{ route('sameRefDemande') }}" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
-                                                    <a href="{{ route('DeleteDemande') }}" class="supprimerD" title="Supprimer"><i class="ik ik-trash"></i></a>
+                                                    @if (Auth::user()->TYPE == $reference->agent->TYPE)
+                                                        <a href="{{ route('DeleteDemande') }}" class="supprimerD" title="Supprimer"><i class="ik ik-trash"></i></a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

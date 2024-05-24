@@ -3,6 +3,7 @@
 use App\Http\Controllers\InsertionController;
 use App\Http\Controllers\SupressionController;
 use App\Http\Controllers\getController;
+use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UpdateController;
@@ -137,6 +138,7 @@ Route::middleware([
     Route::post('/getArticle', [getController::class, 'Article'])->name('getArticle');
     Route::post('/recupArticle', [getController::class, 'GroupArticle'])->name('recupArticle');
     Route::post('/controlQuant', [getController::class, 'Quantite'])->name('controlQuant');
+    Route::post('/controlQuantValidation', [getController::class, 'QuantiteValidation'])->name('controlQuantValidation');
 
     Route::post('/recupAgent', [getController::class, 'GroupAgent'])->name('recupAgent');
     Route::post('/recupDetenteur', [getController::class, 'GroupDetenteur'])->name('recupDetenteur');
@@ -149,10 +151,12 @@ Route::middleware([
     Route::post('/validationDemande', [InsertionController::class, 'validerDem'])->name('validationDemande');
     Route::post('/refuseDemande', [InsertionController::class, 'refuserDem'])->name('refuseDemande');
     Route::post('/confirmationDemande', [InsertionController::class, 'confirmerDem'])->name('confirmationDemande');
+    Route::post('/searchDemande', [getController::class, 'searchDem'])->name('searchDemande');
     Route::post('/validOrigine', [InsertionController::class, 'Origine'])->name('validOrigine');
     Route::post('/valideMateriel', [InsertionController::class, 'Materiel'])->name('valideMateriel');
 
     Route::delete('/tologout', [LoginController::class, 'tologout'])->name('logout');
+    Route::delete('/ajaxTologout', [LoginController::class, 'ajaxTologout'])->name('ajaxLogout');
 
     Route::get('/article/{id}', [PageController::class, 'updateArticle']);
     Route::post('/modification/{id}', [UpdateController::class, 'Article']);
@@ -174,10 +178,19 @@ Route::middleware([
 
 
     Route::get('/imprimerDemande', [ImportController::class, 'ImpressionDemande'])->name('imprimerDemande');
+    Route::get('/imprimerLivraison', [ImportController::class, 'ImpressionLivraison'])->name('imprimerLivraison');
     Route::get('/imprimerStock', [ImportController::class, 'ImpressionStock'])->name('imprimerStock');
 
     Route::post('/updateUserProfilBase', [UpdateController::class, 'Profil'])->name('updateUserProfilBase');
     Route::post('/updateUserProfilParam', [UpdateController::class, 'UpdateProfil'])->name('updateUserProfilParam');
+
+    Route::post('/passwordVerification', [getController::class, 'verifypass'])->name('passwordVerification');
+    Route::post('/getAgentInfo', [getController::class, 'Agent'])->name('getAgentInfo');
+
+    Route::post('/changePassWord', [UpdateController::class, 'passWord'])->name('changePassWord');
+
+    Route::post('/downloadImg', [ImportController::class, 'telechargerPhotoProfil'])->name('downloadImg');
+    
     // Route::post('/putinPanier', [getController::class, 'Article'])->name('putinPanier');
 
     // Route::get('/dashboard', function () {

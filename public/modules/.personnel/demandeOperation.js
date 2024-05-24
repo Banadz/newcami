@@ -2,13 +2,17 @@ $(document).ready(function(){
     const firstRedirection = document.querySelector('meta[name="demande-waiting"]').getAttribute('content');
     const livredUrl = document.querySelector('meta[name="demande-recieved"]').getAttribute('content');
     const printUrl = document.querySelector('meta[name="demande-print"]').getAttribute('content');
+    const printLivUrl = document.querySelector('meta[name="livraison-print"]').getAttribute('content');
     const livringUrl = document.querySelector('meta[name="demande-livring"]').getAttribute('content');
     const verifyUrl = document.querySelector('meta[name="demande-verify"]').getAttribute('content');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     const controlQual = document.querySelector('meta[name="controlQual-route"]').getAttribute('content')
+    const controlQualValidation = document.querySelector('meta[name="controlQuantValidation-route"]').getAttribute('content')
     const user = document.querySelector('meta[name="user-type"]').getAttribute('content')
-    const userInfo = document.querySelector('meta[name="user-info"]').getAttribute('content')
     const userMatri = document.querySelector('meta[name="user-matricule"]').getAttribute('content')
+    const searchDemUrl = document.querySelector('meta[name="demande-searching"]').getAttribute('content')
+    const groupDemUrl = document.querySelector('meta[name="demande-group"]').getAttribute('content')
+    const deleteDemUrl = document.querySelector('meta[name="demande-delete"]').getAttribute('content')
     
     $('#livred_dem').DataTable({
         "searching": true,
@@ -24,14 +28,6 @@ $(document).ready(function(){
     
 
     const livringData = $('#valid_dem').DataTable({
-        "columnDefs": [
-            {
-                "targets": 5, // Indice de la 4ème colonne (commençant à zéro)
-                "render": function(data, type, row) {
-                return '<div contenteditable="true">' + data + '</div>';
-                }
-            }
-        ],
         "lengthMenu":[3, 10, 20, 50, 100],
         "pageLength":3,
     });
@@ -230,13 +226,21 @@ $(document).ready(function(){
         $("#unite").val('');
         $('#defaultArt').remove()
     })
-    // QUANTITE CONTROL...........
+    // QUANreferencesTITE CONTROL...........
     $('body').on('input', '.kwantite' , function(ko){
         ko.preventDefault()
         const objectif = $(this)
         var url = $(this).attr('target')
         var article = objectif.attr('name')
         ControlQant(article, url, objectif)
+    })
+
+    $('body').on('input', '.accordion' , function(ko){
+        ko.preventDefault()
+        const objectif = $(this)
+        var url = $(this).attr('target')
+        var article = objectif.attr('name')
+        ControlQantValidation(article, url, objectif)
     })
 
     function ControlQant(cible, url, source){
@@ -281,10 +285,62 @@ $(document).ready(function(){
         })
     }
 
+    function ControlQantValidation(cible, url, source){
+        const input = source.val();
+        $.ajax({
+            type:'POST',
+            url: url,
+            data:{
+                _token:csrfToken,
+                article:cible
+            },
+            success:function(response, statut){
+                if (response.success){
+                    console.log(response)
+                    const reference = response.article['0'].EFFECTIF - response.qcumulus
+                    if (input > reference){
+                        source.removeClass('is-valid');
+                        source.addClass('is-invalid');
+                        source.addClass('champs-invalide');
+
+                    }else{
+                        source.removeClass('champs-invalide');
+                        source.removeClass('is-invalid');
+                        source.addClass('is-valid');
+                    }
+
+                }else{
+                    swal("Problème de connexion", "Veuillez réessayer plutard", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    }).then((Delete) => {
+                        if (Delete) {
+                            window.location.reload()
+                        }
+                    })
+                }
+            }
+
+        })
+    }
+
     $('body').on('input', '.kwantite', function(){
         var champs = $(this).val()
         var newValue = champs.replace(/\D/g, '')
         $(this).val(newValue)
+    })
+    $('body').on('input', '.caprice', function(){
+        const champs = $(this).val()
+        if (champs > 2){
+            $(this).addClass('champs-inacceptable');
+
+        }else{
+            $(this).removeClass('champs-inacceptable');
+        }
     })
 
     $('body').on('focus', '#quantite' , function(ko){
@@ -520,6 +576,7 @@ $(document).ready(function(){
         }
     })
 
+// =======================================================================================================
 
     // VALIDATION.........
     const oldInfoDem = $('#infoDem').DataTable()
@@ -552,8 +609,8 @@ $(document).ready(function(){
                     $('#ref_dem').attr('title', ref)
                     infoTable.clear().draw();
                     $.each(response.demandes, function(i,v){
-                        if (response.user != 'User'){
-                            var quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQual+`" class="form-control editableQte kwantite kotrokotro manahira">`
+                        if (response.user == 'Admin'){
+                            var quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQualValidation+`" class="form-control editableQte kotrokotro manahira accordion">`
                             if (v['article']['SPECIFICATION']){
                                 infoTable.row.add([
                                     v['id'],
@@ -613,8 +670,8 @@ $(document).ready(function(){
     const validationForm = $('#formValidDem')
     $(validationForm).on('submit', function(ko){
         ko.preventDefault()
-        if ($('.kotrokotro').hasClass('is-invalid')) {
-            swal('Echèc', `La quantité requise est en excée`,{
+        if ((!$('.kotrokotro').val()) || $('.kotrokotro').val() == null) {
+            swal('Echèc', `Veuillez remplir les quantités à accorder!`,{
                 icon : "error",
                 buttons: {
                     confirm: {
@@ -623,10 +680,8 @@ $(document).ready(function(){
                 },
             })
         }else{
-            const donnees = $('#infoDem').DataTable().rows().data().toArray();
-            var nombreDeLignes = $('#infoDem').DataTable().rows().count();
-            if (1 > nombreDeLignes){
-                swal('Echèc', `Votre liste est vide`,{
+            if ($('.kotrokotro').hasClass('is-invalid')) {
+                swal('Echèc', `La quantité requise est en excée`,{
                     icon : "error",
                     buttons: {
                         confirm: {
@@ -635,65 +690,81 @@ $(document).ready(function(){
                     },
                 })
             }else{
-                datafrom = validationForm.serialize()
-                const trueData = {}
-                $.each(datafrom.split('&'), function(){
-                    var pair = this.split('=')
-                    trueData[pair[0]] = decodeURIComponent(pair[1] || '')
-                })
-                // console.log(JSON.stringify(trueData))
-                donnees.forEach(function(row) {
-                    const inputName = $(row[4]).attr('name')
-                    const parsedName = parseInt(inputName);
-                    const inputValue = trueData[parsedName]
-                    const parsedValue = parseInt(inputValue);
-                    row[4] = parsedValue
-                });
-                const donneesJSON = JSON.stringify(donnees);
-                var reference = $('#ref_dem').attr('title')
-                url = $(this).attr('action')
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: {
-                        _token:csrfToken,
-                        reference:reference,
-                        donnees: donneesJSON
-                    },
-                    success: function(response) {
-                        if(response.success){
-                            console.log(response)
-                            swal('Succès', `Demande ref°`+ response.ref + ` traité`,{
-                                icon : "success",
-                                buttons: {
-                                    confirm: {
-                                        className : 'btn btn-info'
+                const donnees = $('#infoDem').DataTable().rows().data().toArray();
+                var nombreDeLignes = $('#infoDem').DataTable().rows().count();
+                if (1 > nombreDeLignes){
+                    swal('Echèc', `Votre liste est vide`,{
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    })
+                }else{
+                    datafrom = validationForm.serialize()
+                    const trueData = {}
+                    $.each(datafrom.split('&'), function(){
+                        var pair = this.split('=')
+                        trueData[pair[0]] = decodeURIComponent(pair[1] || '')
+                    })
+                    // console.log(JSON.stringify(trueData))
+                    donnees.forEach(function(row) {
+                        const inputName = $(row[4]).attr('name')
+                        const parsedName = parseInt(inputName);
+                        const inputValue = trueData[parsedName]
+                        const parsedValue = parseInt(inputValue);
+                        row[4] = parsedValue
+                    });
+                    const donneesJSON = JSON.stringify(donnees);
+                    var reference = $('#ref_dem').attr('title')
+                    url = $(this).attr('action')
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            _token:csrfToken,
+                            reference:reference,
+                            donnees: donneesJSON
+                        },
+                        success: function(response) {
+                            if(response.success){
+                                console.log(response)
+                                swal('Succès', `Demande ref°`+ response.ref + ` traité`,{
+                                    icon : "success",
+                                    buttons: {
+                                        confirm: {
+                                            className : 'btn btn-info'
+                                        }
+                                    },
+                                }).then((Delete) => {
+                                    if (Delete) {
+                                        window.location.href = livringUrl
+                                    }else {
+                                        window.location.href = livringUrl
                                     }
-                                },
-                            }).then((Delete) => {
-                                if (Delete) {
-                                    window.location.href = livringUrl
-                                }else {
-                                    window.location.href = livringUrl
-                                }
-                            });
-                        }else{
-                            swal('Echèc', `Veuillez vérifier votre connexion et réessayer plutard.
-                            `+response.message+``,{
-                                icon : "success",
-                                buttons: {
-                                    confirm: {
-                                        className : 'btn btn-info'
-                                    }
-                                },
-                            })
+                                });
+                            }else{
+                                swal('Echèc', `Veuillez vérifier votre connexion et réessayer plutard.
+                                `+response.message+``,{
+                                    icon : "success",
+                                    buttons: {
+                                        confirm: {
+                                            className : 'btn btn-info'
+                                        }
+                                    },
+                                })
+                            }
                         }
-                    }
-                });
+                    });
 
+                }
             }
+            
         }
     })
+
+// =======================================================================================================
 
     // REFUSER DEMANDE..............
     const deniedTable = $("#denied_dem").DataTable()
@@ -838,8 +909,12 @@ $(document).ready(function(){
 
     })
 
+
+// =========================================================================================================
+
     //LIVRAISON DEMANDE.............
     $('#demandeW tbody').on('click', '.detail', function (de) {
+        alert('545')
         de.preventDefault()
         $tr = $(this).closest('tr');
         var data =  $tr.children("td").map(function(){
@@ -858,30 +933,24 @@ $(document).ready(function(){
                 // console.log(response)
                 if (response.success){
                     $('#ref_dem').html(`Réference: `+ref)
-                    if (userMatri == response.demandes[0].reference['MATRICULE']){
-                        const html = `  <a href="`+printUrl+`" id="impressionant" class="btn btn-success">
-                                            Imprimer
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">Accepter</button>`
-                        $('#confirmFooter').html(html)
-                    }else{
-                        const html = `  <a href="`+printUrl+`" id="impressionant" class="btn btn-success">
-                                            Imprimer
-                                        </a>`
+                    // if (userMatri == response.demandes[0].reference['MATRICULE']){
+                    if (user == 'Master'){
+                        const html = ` <a href="`+printLivUrl+`" id="impressionante" class="btn btn-success">Imprimer</a>
+                                        <button type="submit" class="btn btn-primary">Accepter</button>` 
                         $('#confirmFooter').html(html)
                     }
                     
                     $('#ref_dem').attr('title', ref)
                     livringData.clear().draw();
                     $.each(response.demandes, function(i,v){
-                        if (response.user == 'User'){
-                            const quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQual+`" class="form-control editableQte kwantite kotrokotro">`
+                        if (user == 'Master'){
+                            const quantitess = `<input type="number" name="`+v['article']['id']+`" target="`+controlQual+`" class="form-control editableQte kwantite kotrokotro caprice">`
                             
                             if (v['article']['SPECIFICATION']){
                                 livringData.row.add([
                                     v['id'],
                                     v['article']['DESIGNATION'] +` `+v['article']['SPECIFICATION'],
-                                    v['article']['EFFECTIF'],
+                                    // v['article']['EFFECTIF'],
                                     v['QUANTITE'],
                                     v['QUANTITE_ACC'],
                                     quantitess,
@@ -891,7 +960,7 @@ $(document).ready(function(){
                                 livringData.row.add([
                                     v['id'],
                                     v['article']['DESIGNATION'],
-                                    v['article']['EFFECTIF'],
+                                    // v['article']['EFFECTIF'],
                                     v['QUANTITE'],
                                     v['QUANTITE_ACC'],
                                     quantitess,
@@ -903,7 +972,7 @@ $(document).ready(function(){
                                 livringData.row.add([
                                     v['id'],
                                     v['article']['DESIGNATION']+` `+v['article']['SPECIFICATION'],
-                                    v['article']['EFFECTIF'],
+                                    // v['article']['EFFECTIF'],
                                     v['QUANTITE'],
                                     v['QUANTITE_ACC'],
                                     v['UNITE']
@@ -912,7 +981,7 @@ $(document).ready(function(){
                                 livringData.row.add([
                                     v['id'],
                                     v['article']['DESIGNATION'],
-                                    v['article']['EFFECTIF'],
+                                    // v['article']['EFFECTIF'],
                                     v['QUANTITE'],
                                     v['QUANTITE_ACC'],
                                     v['UNITE']
@@ -945,15 +1014,27 @@ $(document).ready(function(){
         const multidata = livringData.rows().data().toArray();
 
         url = $(this).attr('action')
-        if ($('.kotrokotro').hasClass('is-invalid')) {
-            swal('Echèc', `La quantité requise est en excée`,{
-                icon : "error",
-                buttons: {
-                    confirm: {
-                        className : 'btn btn-danger'
-                    }
-                },
-            })
+        if ($('.kotrokotro').hasClass('is-invalid') || $('.kotrokotro').hasClass('champs-inacceptable')) {
+            if ($('.kotrokotro').hasClass('is-invalid')){
+                swal('Echèc', `La quantité requise est en excée`,{
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                })
+            }else{
+                swal('Echèc', `La quantité livrée est en excée par rapport
+                                 au quantité accordée`,{
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                })
+            }
         }else{
             if (1 > nombreDeLignes){
                 swal('Echèc', `Votre liste est vide`,{
@@ -1093,30 +1174,15 @@ $(document).ready(function(){
         impressionDemande(reference, table, btn)
     })
 
-    $('body').on('click', ".supprimerD", function(ko){
+    
+    $('body').on('click', "#impressionante", function(ko){
         ko.preventDefault()
-        $tr = $(this).closest('tr');
-        var data =  $tr.children("td").map(function(){
-            return $(this).text()
-        }).get();
-        var reference = data[0]
-        const deletUrl = $(this).attr('href')
-        verificationDemande(reference, deletUrl)
-    })
-    // $('body').on('click', "#impressionante", function(ko){
-    //     ko.preventDefault()
-    //     var reference = $('#ref_dem').attr('title')
-    //     const btn = $(this)
-    //     const table = $('#livred_dem').DataTable()
-    //     impressionDemande(reference, table, btn)
-    // })
-    $('body').on('click', "#impressionantes", function(ko){
-        ko.preventDefault()
-        var reference = $('#ref_dem').attr('title')
+        const reference = $('#ref_dem').attr('title')
         const btn = $(this)
-        const table = $('#denied_dem').DataTable()
+        const table = $('#livred_dem').DataTable()
         impressionDemande(reference, table, btn)
     })
+
     function impressionDemande(reference, table, button){
         var reference = $('#ref_dem').attr('title')
         const impression = table.rows().data().toArray();
@@ -1141,6 +1207,17 @@ $(document).ready(function(){
 
         }
     }
+
+    $('body').on('click', ".supprimerD", function(ko){
+        ko.preventDefault()
+        $tr = $(this).closest('tr');
+        var data =  $tr.children("td").map(function(){
+            return $(this).text()
+        }).get();
+        var reference = data[0]
+        const deletUrl = $(this).attr('href')
+        verificationDemande(reference, deletUrl)
+    })
     function verificationDemande(reference, link){
         $.ajax({
             type:'POST',
@@ -1224,6 +1301,126 @@ $(document).ready(function(){
             }
 
         })
+    }
+
+
+    // ========================================================================================
+    // SEARCH
+    $('.searchOption').hide()
+    
+    $('body').on('click', ".moreOptions", function(ko){
+        ko.preventDefault()
+        if($(".searchOption").is(":visible")){
+            $(".searchOption").hide();
+            $('#searching').trigger('reset');
+        } else {
+            $(".searchOption").show();
+        }
+        
+    })
+    
+    const dateActuelle = new Date().toISOString().split('T')[0];
+    $('#dating, #endPoint').attr('max', dateActuelle);
+    
+    const dateMinimale = '2020-01-01';
+    $('#dating, #endPoint').attr('min', dateMinimale);
+
+    $('#dating').change(function(){
+        const dateDebut = $(this).val();
+        // Définir la limite inférieure (min) du champ de fin comme étant la date de début
+        $('#endPoint').attr('min', dateDebut);
+    });
+    let optioneDate = "UNIQUE"
+    $(document).ready(function(){
+        $(".dropdown-item").click(function(){
+            const selectedValue = $(this).data("value");
+            const dropdownButton = $(this).closest('.input-group').find('.dropdown-button');
+            dropdownButton.html(selectedValue + ' <i class="ik ik-chevron-down"></i>');
+            if (selectedValue === "Début") {
+                $("#newInput").show();
+                optioneDate = "START"
+            } else {
+                $("#newInput").hide();
+                $("#endPoint").val() = '';
+                if (selectedValue === "Fin") {
+                    optioneDate = "END"
+                }
+                if (selectedValue === "Unique") {
+                    optioneDate = "UNIQUE"
+                }
+            }
+        });
+    });
+
+    $("#startSearch").click(function(){
+        const date = $("#dating").val();
+        const endDate = $("#endPoint").val();
+        // const structure = $("#structuration").val();
+        const structure = $("#structuration option:selected").val();
+        const article = $("#article").val();
+        const typedate = optioneDate
+
+        const searchData = {
+            _token:csrfToken,
+            date: date,
+            endDate: endDate,
+            typedate: typedate,
+            structure: structure,
+            article: article
+        };
+        $.ajax({
+            url: searchDemUrl,
+            method: "POST",
+            data: searchData,
+            success: function(response){
+                $('#demandeW').DataTable().clear().draw();
+                $.each(response.references, function(i,v){
+                    let optionnal
+                    if (user == v['agent']['TYPE']){
+                        optionnal = `<div class="table-actions">
+                                                <a href="`+groupDemUrl+`" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
+                                                <a href="`+deleteDemUrl+`" class="supprimerD" title="Supprimer"><i class="ik ik-trash"></i></a>
+                                            </div>`
+                    }else{
+                        optionnal = `<div class="table-actions">
+                                                <a href="`+groupDemUrl+`" class="info" data-toggle="modal" data-target="#demandeInfo" title="Details"><i class="ik ik-info"></i></a>
+                                            </div>`
+                    }
+                
+                    $('#demandeW').DataTable().row.add([
+                        v['REFERENCE'],
+                        v['agent']['MATRICULE'] +' | '+ v['agent']['PRENOM'],
+                        v['agent']['FONCTION'] +' | '+ v['agent']['division']['CODE_DIVISION'],
+                        v['DATE_DEMANDE'],
+                        v['demandes_count']+ ' demande(s)',
+                        optionnal
+                    ]).draw();
+                    
+                })
+            },
+            error: function(xhr, status, error){
+                console.error(error);
+                swal('Echèc', `Une erreur s'est produite lors de la recherche.`,{
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                }).then((Delete) => {
+                    if (Delete) {
+                        swal.close()
+                    }else {
+                        swal.close()
+                    }
+                })
+            }
+        });
+    });
+    
+    
+    function searchOption(parameters, table){
+
     }
 
 })

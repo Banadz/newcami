@@ -43,6 +43,17 @@
 
                     </div>
                 @endif
+                @if ($type == 'Master')
+                    <div class="nav-item">
+                        <a href="article"><i class="ik ik-box"></i><span>Article</span></a>
+
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="demande"><i class="ik ik-navigation"></i><span>Demande</span> <span class="badge badge-success">New</span></a>
+
+                    </div>
+                @endif
                 @if ($type == 'User')
                     <div class="nav-item">
                         <a href="newDemande"><i class="ik ik-navigation"></i><span>Demande</span>

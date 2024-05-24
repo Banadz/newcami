@@ -14,6 +14,7 @@ use App\Models\Sortie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UpdateController extends Controller
 {
@@ -81,12 +82,14 @@ class UpdateController extends Controller
     }
 
     public function UpdateProfil(Request $request){
-        $matricule = $request->input('matricule');
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+
         $agent = Agent::where('MATRICULE', $matricule)->first();
 
-        $agent->TELEPHONE = $request->input('telephone');
-        $agent->EMAIL = $request->input('email');
-        $agent->PASSWORD = $request->input('password');
+        $agent->TELEPHONE = $request->input('numeroP');
+        $agent->EMAIL = $request->input('mailP');
+        // $agent->PASSWORD = $request->input('password');
         $agent->save();
 
         return response()->json([
@@ -97,25 +100,40 @@ class UpdateController extends Controller
     }
 
     public function Profil(Request $request){
-        // $user = Auth::user();
-        // $matricule = $user->MATRICULE;
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
 
-        // $agent = Agent::where('MATRICULE', $matricule)->first();
+        $agent = Agent::where('MATRICULE', $matricule)->first();
 
-        // $agent->NOM = $request->input('nomP');
-        // $agent->PRENOM = $request->input('prenomP');
-        // $agent->GENRE = $request->input('genreP');
-        // $agent->ADRESSE_PHYSIQUE = $request->input('adresseP');
-        // $agent->PSEUDO = $request->input('title');
+        $agent->NOM = $request->input('nomP');
+        $agent->PRENOM = $request->input('prenomP');
+        $agent->GENRE = $request->input('genreP');
+        $agent->ADRESSE_PHYSIQUE = $request->input('adresseP');
+        $agent->PSEUDO = $request->input('title');
 
-        // // $agent->save();
+        $agent->save();
 
-        // return response()->json([
-        //     'success' => true,
-        //     'agent' => $matricule
-        // ]);
-        dump($request->input('title'));
+        return response()->json([
+            'success' => true,
+            'agent' => $matricule
+        ]);
+        // dump($request->input('title'));
 
+    }
+
+    public function passWord(Request $request){
+        $user = Auth::user();
+        $matricule = $user->MATRICULE;
+
+        $agent = Agent::where('MATRICULE', $matricule)->first();
+        $agent->PASSWORD = Hash::make($request->input('newpass'));
+
+        $agent->save();
+
+        return response()->json([
+            'success' => true,
+            'agent' => $matricule
+        ]);
     }
 
     public function Compte(Request $request){

@@ -42,7 +42,7 @@
                     <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
                         <div class="authentication-form mx-auto">
                             <div class="" style="margin-bottom: 10%">
-                                <a href="#"><img src="images/auth/CAMI1@300x.png" alt="logo" width="100%"></a>
+                                <a href="#"><img src="images/auth/CAMI1_1@300x-8.png" alt="logo" width="100%"></a>
                             </div>
                             <p>Authentification</p>
                             <form action="tologin" id="login_Form" method="POST" class="loginForm">

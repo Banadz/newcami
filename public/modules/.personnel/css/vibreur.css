@@ -3,6 +3,10 @@
     border: 1px solid red;
 }
 
+.champs-inacceptable {
+    border: 2px solid rgb(1, 48, 117);
+}
+
 @keyframes shake {
     0%, 100%{
         transform: translateX(0);

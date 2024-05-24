@@ -37,10 +37,13 @@
                     <div class="card-body">
                         <div class="text-center">
                             @if ($agent->PHOTO)
-                                <img src="images/profil/{{ $agent->PHOTO }}" class="rounded-circle" width="150" />
+                                <img src="images/profil/{{ $agent->PHOTO }}" id="profilPhoto" class="rounded-circle" width="150"/>
                             @else
-                                <img src="images/profil/user.png" class="rounded-circle" width="150" />
+                                <img src="images/profil/default/user.png" id="profilPhoto" class="rounded-circle" width="150" />
                             @endif
+                            <form id="myForm" method="POST" enctype="multipart/form-data">
+                                <input type="file" name="choicePdp" id="choicePdp" style="display: none;">
+                            </form>
                             <h4 class="card-title mt-10">{{ $agent->PSEUDO }}</h4>
                             <p class="text-center d-md-inline-block">{{ $agent->FONCTION }} | {{ $agent->CODE_DIVISION }} | {{ $agent->division->CODE_SERVICE }}</p>
                         </div>
@@ -120,7 +123,8 @@
                                     Quelques paramétrages en liaison avec votre compte.
                                 </p>
                                 <hr>
-                                <form id="infoProfParam" class="form-horizontal">
+                                <form id="infoProfParam" method="POST" class="form-horizontal" action="{{ route('updateUserProfilParam') }}">
+                                    @csrf
                                     <div class="form-group">
                                         <label for="mailP">Adresse e-mail</label>
                                         <input type="text" placeholder="xandrianajorobanadz@gmail.com" value="{{ $agent->EMAIL }}"
@@ -133,8 +137,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="motdeP">Mot de passe</label>
-                                        <input type="password" value="12345687"
-                                        class="form-control" name="motdeP" id="motdeP">
+                                        <input type="password" title="Cliquez pour changer" value="12345687910"
+                                        class="form-control" id="motdeP" readonly>
                                     </div>
                                     <hr>
                                     <button class="btn btn-success" type="submit">Changer</button>
@@ -150,6 +154,7 @@
 @section('updateModal')
         {{-- Update Modals --}}
         {{-- @include('pages.modals.demandeInfo') --}}
+        @include('pages.modals.passWord')
     @endsection
 
     @section('specialScript')

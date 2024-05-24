@@ -66,9 +66,9 @@
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         @if ($user->PHOTO)
-                            <img class="avatar" src="images/profil/{{ $user->PHOTO }}" alt="icon-profil">
+                            <img class="avatar profilAvatar" src="images/profil/{{ $user->PHOTO }}" alt="icon-profil">
                         @else
-                            <img class="avatar" src="images/profil/user.png" alt="icon-profil"/>
+                            <img class="avatar profilAvatar" src="images/profil/default/user.png" alt="icon-profil"/>
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">

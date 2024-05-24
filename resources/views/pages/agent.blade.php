@@ -74,7 +74,8 @@
                                         <td>
                                             <div class="table-actions">
                                                 <a href="{{ route('getAgent') }}" class="updateAgent" data-toggle="modal" data-target="#agentUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
-                                                <a href="#" title="Supprimer"><i class="ik ik-trash-2"></i></a>
+                                                <a href="#" title="Désactiver"><i class="ik ik-shield-off"></i></a>
+                                                <a href="#" title="Activer"><i class="ik ik-shield"></i></a>
                                                 <a href="#" class="nav-link dropdown-toggle" href="#"
                                                     id="actionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false"title="Plus">

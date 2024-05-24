@@ -1,5 +1,10 @@
 $(document).ready(function(){
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    const passVerifyUrl = document.querySelector('meta[name="pswrd-verification"]').getAttribute('content')
+    const sendImageUrl = document.querySelector('meta[name="send-img-url"]').getAttribute('content')
+    const changePass = document.querySelector('meta[name="change"]').getAttribute('content')
+    const disconnectionUrl = document.querySelector('meta[name="disconnecting"]').getAttribute('content')
+    const connectionUrl = document.querySelector('meta[name="connecting"]').getAttribute('content')
 
     function verification(array, colonne, valeur){
         for (var i = 0; i < array.length; i++){
@@ -346,23 +351,436 @@ $(document).ready(function(){
     // PROFIL............
     $('#infoProfBase').on('submit', function(def){
         def.preventDefault()
-        var infoBase = $(this).serialize()
+        const infoBase = $(this).serialize()
         url = $(this).attr('action')
-        alert(url)
-        $.ajax({
-            type:'POST',
-            url: url,
-            data:
-                infoBase,
-            success:function(response, statut){
-                console.log(response)
-                if (response.success){
-                    alert("données de l'agent " + response.agent + "modifiée" )
-                    // window.location.reload();
-                }else{
-                    console.log(response)
+        swal('Confirmation', `Voullez vous vraiment enregistrer les modfications ?`,{
+            icon : "warning",
+            buttons: {
+                confirm: {
+                    text : 'Oui',
+                    className : 'btn btn-danger'
+                },
+                cancel: {
+                    visible: true,
+                    text:'Annuler',
+                    className: 'btn btn-info'
                 }
+            },
+        }).then((Delete) => {
+            if (Delete) {
+                $.ajax({
+                    type:'POST',
+                    url: url,
+                    data:
+                        infoBase,
+                    success:function(response, statut){
+                        // console.log(response)
+                        if (response.success){
+                            swal('Succès', `Les données de base de votre profil a été mis à jour!
+                            IM:` + response.agent ,{
+                                icon : "warning",
+                                buttons: {
+                                    confirm: {
+                                        text : 'Oui',
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    window.location.reload();
+                                }else{
+                                    window.location.reload();
+                                }
+                            })
+                        }else{
+                            swal('Echèc', `Veuillez verifier votre connexion et réessayer`,{
+                                icon : "Error",
+                                buttons: {
+                                    confirm: {
+                                        text : 'Oui',
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    swal.close();
+                                }else{
+                                    swal.close();
+                                }
+                            })
+                        }
+                    }
+                })
+            }else{
+                swal.close()
             }
         })
+        
     })
+
+    $('#infoProfParam').on('submit', function(def){
+        def.preventDefault()
+        const infoBase = $(this).serialize()
+        url = $(this).attr('action')
+        // console.log(infoBase)
+        swal('Confirmation', `Voullez vous vraiment enregistrer les modfications ?`,{
+            icon : "warning",
+            buttons: {
+                confirm: {
+                    text : 'Oui',
+                    className : 'btn btn-danger'
+                },
+                cancel: {
+                    visible: true,
+                    text:'Annuler',
+                    className: 'btn btn-info'
+                }
+            },
+        }).then((Delete) => {
+            if (Delete) {
+                $.ajax({
+                    type:'POST',
+                    url: url,
+                    data:
+                        infoBase,
+                    success:function(response, statut){
+                        // console.log(response)
+                        if (response.success){
+                            swal('Succès', `Les données liées à votre profil a été mis à jour!
+                            IM:` + response.agent ,{
+                                icon : "warning",
+                                buttons: {
+                                    confirm: {
+                                        text : 'Oui',
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    window.location.reload();
+                                }else{
+                                    window.location.reload();
+                                }
+                            })
+                        }else{
+                            swal('Echèc', `Veuillez verifier votre connexion et réessayer`,{
+                                icon : "Error",
+                                buttons: {
+                                    confirm: {
+                                        text : 'Oui',
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            }).then((Delete) => {
+                                if (Delete) {
+                                    swal.close();
+                                }else{
+                                    swal.close();
+                                }
+                            })
+                        }
+                    }
+                })
+            }else{
+                swal.close()
+            }
+        })
+        
+    })
+
+    $('body').on('click', '#motdeP', function (){
+        swal('Mot de Passe', 'Saisisez votre mot de passe',{
+            // id:"oldpassField",
+            // title: 'Mot de Passe',
+            content: {
+                element: "input",
+                attributes: {
+                    placeholder: "***********",
+                    type: "password",
+                    id: "oldpass",
+                    // style:"border: solid 2px red;",
+                    className: "form-control"
+                },
+            },
+            buttons: {
+                confirm: {
+                    text:'Continuer',
+                    className : 'btn btn-warning'
+                },
+                cancel: {
+                    visible: true,
+                    text:'Annuler',
+                    className: 'btn btn-info'
+                }
+            },
+        }).then((Delete) => {
+            if(Delete){
+                const oldpass = $('#oldpass').val();
+                $.ajax({
+                    url: passVerifyUrl,
+                    type:'POST',
+                    data: {
+                        _token:csrfToken,
+                        oldpass: oldpass
+                    },
+                    dataType:'json',
+                    success:function(reponse,status){
+                        if(reponse.match){
+                            $('#passModal').modal('show');
+                        }else{
+                            swal("Echèc!", "Mot de passe incorrect!", {
+                                icon : "error",
+                                buttons: {        			
+                                    confirm: {
+                                        className : 'btn btn-danger'
+                                    }
+                                },
+                            });
+                        }
+                    }
+                })
+            }else{
+                swal.close();
+            }
+        });
+    })
+
+    $('#passform').on('submit',function(def){
+        def.preventDefault();
+        if ($('#newpass').val() !== $('#confpass').val()){
+            swal("Echèc", "Veuillez confirmer votre mot de passe!", {
+                icon : "error",
+                buttons: {        			
+                    confirm: {
+                        className : 'btn btn-danger'
+                    }
+                },
+            });
+        }else{
+            swal({
+                title: 'Êtes vous sûre?',
+                icon: 'warning',
+                text: 'Votre mot de passe va être modifié.',
+                type: 'warning',
+                buttons:{
+                    confirm: {
+                        text : 'Oui',
+                        className : 'btn btn-warning'
+                    },
+                    cancel: {
+                        visible: true,
+                        text: 'Annuler',
+                        className: 'btn'
+                    }
+                }
+            }).then((Delete) => {
+                if (Delete) {
+                    // alert("kokokokoko")
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    });
+                    const newpass = $('#newpass').val()
+                    $.ajax({
+                        url: changePass,
+                        type:'POST',
+                        data: {newpass:newpass},
+                        dataType:'json',
+                        success:function(reponse,status){
+                            if(reponse.success){
+                                swal("Succès!", "Votre mot de passe a été changé avec succès!", {
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                                $.ajax({
+                                    url: disconnectionUrl,
+                                    type:'DELETE',
+                                    dataType:'json',
+                                    success:function(reponse,status){
+                                        if(reponse.disconnected){
+                                            window.location.href = connectionUrl;
+                                        }else{
+                                            swal("Echèc", "Veuillez vérifier votre connexion et réessayer plutard", {
+                                                icon : "error",
+                                                buttons: {        			
+                                                    confirm: {
+                                                        className : 'btn btn-danger'
+                                                    }
+                                                },
+                                            });
+                                        }
+                                        
+                                    }
+                                })
+                                    
+                            }else{
+                                swal("Erreur", "Une erreur, lors du transfert de donnés", {
+                                    icon : "error",
+                                    buttons: {        			
+                                        confirm: {
+                                            className : 'btn btn-success'
+                                        }
+                                    },
+                                });
+                            }
+                        }
+                    })
+                } else {
+                    swal.close();
+                }
+            });
+        }
+        
+    })
+
+
+    // photo de profil..............
+    
+    $('#profilPhoto').on('click', function (def){
+        def.preventDefault()
+        $('#choicePdp').click();
+    })
+
+    // $('#choicePdp').change(function() {
+    //     const form = $("#myfom")
+    //     var fichier = $(this)[0].files[0];
+    //     var lecteur = new FileReader();
+
+        
+
+    //     // form.submit();
+    //     lecteur.onload = function(event) {
+    //         $('#profilPhoto').attr('src', event.target.result);
+    //         $('.profilAvatar').attr('src', event.target.result);
+    //     };
+    //     lecteur.readAsDataURL(fichier);
+    // });
+
+    $('#choicePdp').change(function() {
+        var fichier = $(this)[0].files[0];
+        var lecteur = new FileReader();
+    
+        var formData = new FormData();
+        formData.append('image', fichier);
+    
+        // console.log(formData)
+        // Ajouter le jeton CSRF à l'en-tête de la requête
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+    
+        // Envoyer le fichier via AJAX
+        $.ajax({
+            url: sendImageUrl,
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Gérer la réponse en cas de succès
+                swal('Succès', response.message, {
+                    icon: "success",
+                    buttons: {
+                        confirm: {
+                            text: 'Oui',
+                            className: 'btn btn-danger'
+                        }
+                    },
+                }).then((Delete) => {
+                    if (Delete) {
+                        swal.close()
+                    } else {
+                        swal.close()
+                    }
+                })
+            },
+            error: function(xhr, status, error) {
+                // Gérer les erreurs de téléchargement
+                console.error(error);
+                swal('Echèc', `Erreur de téléchargement d'image, Veuillez réessayer plutard.`, {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: 'Oui',
+                            className: 'btn btn-danger'
+                        }
+                    },
+                }).then((Delete) => {
+                    if (Delete) {
+                        swal.close()
+                    } else {
+                        swal.close()
+                    }
+                })
+            }
+        });
+    
+        // Afficher l'image sélectionnée
+        lecteur.onload = function(event) {
+            $('#profilPhoto').attr('src', event.target.result);
+            $('.profilAvatar').attr('src', event.target.result);
+        };
+        lecteur.readAsDataURL(fichier);
+    });
+    
+
+    // $('#myForm').on('submit', function(e){
+    //     e.preventDefault()
+    //     var fichier = $('#choicePdp')[0].files[0];
+
+    //     var formData = new FormData();
+    //     formData.append('image', fichier);
+
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': csrfToken
+    //         }
+    //     });
+    //     // Envoyer le fichier IMAGE..............
+    //     $.ajax({
+    //         url: sendImageUrl,
+    //         method: "POST",
+    //         data:formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function(response){
+    //             swal('Succès', response.message,{
+    //                 icon : "success",
+    //                 buttons: {
+    //                     confirm: {
+    //                         text : 'Oui',
+    //                         className : 'btn btn-danger'
+    //                     }
+    //                 },
+    //             }).then((Delete) => {
+    //                 if (Delete) {
+    //                     swal.close()
+    //                 }else{
+    //                     swal.close()
+    //                 }
+    //             })
+    //         },
+    //         error: function(xhr, status, error){
+    //             console.error(error);
+    //             swal('Echèc', `Erreur de téléchargement d'image, Veuillez réessayer plutard.`,{
+    //                 icon : "error",
+    //                 buttons: {
+    //                     confirm: {
+    //                         text : 'Oui',
+    //                         className : 'btn btn-danger'
+    //                     }
+    //                 },
+    //             }).then((Delete) => {
+    //                 if (Delete) {
+    //                     swal.close()
+    //                 }else{
+    //                     swal.close()
+    //                 }
+    //             })
+    //         }
+    //     });
+    // })
 })

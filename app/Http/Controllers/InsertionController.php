@@ -249,10 +249,6 @@ class InsertionController extends Controller
                 }
                 $demande->QUANTITE_ACC = $ligne[4];
                 $demande->save();
-
-                $stock = $demande->article->EFFECTIF;
-                $demande->article->EFFECTIF = $stock - $ligne[4];
-                // $demande->article->save();
             }
             return response()->json([
                 'success' => true,
@@ -304,6 +300,10 @@ class InsertionController extends Controller
                 }
                 $demande->QUANTITE_LIV = $ligne[5];
                 $demande->save();
+
+                $stock = $demande->article->EFFECTIF;
+                $demande->article->EFFECTIF = $stock - $ligne[5];
+                // $demande->article->save();
             }
 
             $de = Demande::where('id', $donnees[0][0])->first();
@@ -311,9 +311,13 @@ class InsertionController extends Controller
             $ref_demande->ETAT = 'Livred';
             $ref_demande->save();
 
+
+            $actu = Reference::whith('demandes.article')
+            ->where('REFERENCE', '=', $de->REF_DEMANDE)->first();
             return response()->json([
                 'success' => true,
-                'ref' => $reference
+                'ref' => $reference,
+                'actuel' => $actu
             ]);
         }catch(\Exception $e){
             return response()->json([

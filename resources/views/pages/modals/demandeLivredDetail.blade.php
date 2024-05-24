@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('imprimerDemande') }}" id="impressionante" class="btn btn-success">Imprimer</a>
+                            <a href="{{ route('imprimerLivraison') }}" id="impressionante" class="btn btn-success">Imprimer</a>
                         </div>
                     </div>
                 </form>

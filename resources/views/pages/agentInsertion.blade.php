@@ -206,6 +206,7 @@
                                                                 <div class="form-group">
                                                                     <label for="type">Type</label>
                                                                     <select class="form-control" name="type" id="type" required>
+                                                                        <option value="Master">Ordonateur</option>
                                                                         <option value="Super Admin">Administrateur</option>
                                                                         <option value="Admin">Dépositaire</option>
                                                                         <option value="User" selected>Détenteur</option>

@@ -44,9 +44,9 @@
                                             <tr>
                                                 <th>N°</th>
                                                 <th>Article</th>
-                                                <th>Stock</th>
+                                                {{-- <th>Stock</th> --}}
                                                 <th>Qté demandé</th>
-                                                @if (Auth::user()->TYPE == "User")
+                                                @if (Auth::user()->TYPE == "Master")
                                                 <th>Qté accordé</th>
                                                 @endif
                                                 <th>Qté livré</th>
@@ -62,8 +62,8 @@
                             </div>
                         </div>
                         <div class="modal-footer" id="confirmFooter">
-                            <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">Imprimer</a>
-                            <button type="submit" class="btn btn-primary">Accepter</button>
+                            {{-- <a href="{{ route('imprimerDemande') }}" id="impressionant" class="btn btn-success">Imprimer</a> --}}
+                            
                         </div>
                     </div>
                 </form>

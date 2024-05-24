@@ -176,8 +176,10 @@ class PageController extends Controller
         ->where('CODE_SERVICE', '=', $code_service)->where('ETAT', '=', 'Waiting')
         ->withCount('demandes')->get();
 
+        $divisions = Division::where('CODE_SERVICE', '=', $code_service)->get();
+
         // Vérifier le type d"Agent...
-        if ($user->TYPE == "User" ){
+        if ($user->TYPE == "User"){
             $references = Reference::with('demandes.article', 'agent.division')
             ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Waiting')
             ->withCount('demandes')->get();
@@ -187,7 +189,8 @@ class PageController extends Controller
             $dd->DATE_DEMANDE = $carbonDateDEB->isoFormat('D MMMM YYYY [à] H [heure et] mm [minutes]');
         }
         return view('pages.demande', [
-            'references' => $references
+            'references' => $references,
+            'divisions' => $divisions
         ]);
     }
     public function pagedemandeLivring(){
@@ -201,7 +204,7 @@ class PageController extends Controller
         ->withCount('demandes')->get();
 
         // Vérifier le type d"Agent...
-        if ($user->TYPE == "User" ){
+        if ($user->TYPE == "User"){
             $references = Reference::with('demandes.article', 'agent.division')
             ->where('MATRICULE', '=', $matricule)->where('ETAT', '=', 'Livring')
             ->withCount('demandes')->get();

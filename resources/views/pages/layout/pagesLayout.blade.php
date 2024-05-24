@@ -12,9 +12,17 @@
         <meta name="getDivisions" content="{{ route('allDivision') }}">
         <meta name="getAgents" content="{{ route('allAgent') }}">
         <meta name="controlQual-route" content="{{ route('controlQuant') }}">
+        <meta name="controlQuantValidation-route" content="{{ route('controlQuantValidation') }}">
         <meta name="user-type" content="{{ $user = Auth::user()->TYPE; }}">
         <meta name="user-matricule" content="{{ $user = Auth::user()->MATRICULE; }}">
-        <meta name="user-info" content="{{ Auth::user(); }}">
+
+        <meta name="pswrd-verification" content="{{ route('passwordVerification'); }}">
+        <meta name="profil-url" content="{{ route('profil'); }}">
+        <meta name="agent-infos-url" content="{{ route('getAgentInfo') }}">
+        <meta name="send-img-url" content="{{ route('downloadImg') }}">
+        <meta name="change" content="{{ route('changePassWord') }}">
+        <meta name="disconnecting" content="{{ route('ajaxLogout') }}">
+        <meta name="connecting" content="{{ route('seConnecter') }}">
 
         {{-- DEMANDE URL --}}
         <meta name="demande-livring" content="{{ route('livringDemande') }}">
@@ -23,7 +31,11 @@
         <meta name="demande-denied" content="{{ route('deniedDemande') }}">
         <meta name="demande-recieved" content="{{ route('LivredDemande') }}">
         <meta name="demande-print" content="{{ route('imprimerDemande') }}">
+        <meta name="livraison-print" content="{{ route('imprimerLivraison') }}">
         <meta name="demande-verify" content="{{ route('verificationDemande') }}">
+        <meta name="demande-searching" content="{{ route('searchDemande') }}">
+        <meta name="demande-group" content="{{ route('sameRefDemande') }}">
+        <meta name="demande-delete" content="{{ route('DeleteDemande') }}">
 
 
         <link rel="icon" href="../favicon.ico" type="image/x-icon" />

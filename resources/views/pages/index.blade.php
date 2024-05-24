@@ -9,6 +9,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="recolte-demande" content="{{ route('demandeDivision') }}">
+        <meta name="user-matricule" content="{{ $user = Auth::user()->MATRICULE; }}">
+
+        <meta name="pswrd-verification" content="{{ route('passwordVerification'); }}">
+        <meta name="profil-url" content="{{ route('profil'); }}">
+        <meta name="agent-infos-url" content="{{ route('getAgentInfo') }}">
         
 
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -43,6 +48,26 @@
             <div class="page-wrap">
                 {{-- SIDEBAR --}}
                 @include('pages.partition.sidebar')
+                <div class="modal" id="salutation">
+                    <div class="modal-dialog" style="height:100%;" role="document">
+                        <div class="modal-content" style="height:75%;">
+                            <div class="modal-header no-bd" style="margin-bottom:5%;">
+                                <h5 class="modal-title">
+                                    <span style="font-size:14pt; font-weight:bold;" id="titre" >
+                                        Bienvenu!
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="modal-body">
+                                <p id="lettreSalut">
+                                </p>
+                            </div>
+                            <div class="modal-footer no-bd" id="pied">
+                                <button type="button" id="oui" class="btn btn-warning">Oui</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <style>
                     .homeAlone{
                         background-image: url('images/Finance/comptabilité.jpg');
@@ -240,6 +265,9 @@
         <script src="modules/amcharts3/amcharts/pie.js"></script>
         <script src="modules/ammap3/ammap/ammap.js"></script>
         <script src="modules/ammap3/ammap/maps/js/usaLow.js"></script>
+
+
+        <script src="modules/.personnel/salutation/salutation.js"></script>
         
 
     </body>
