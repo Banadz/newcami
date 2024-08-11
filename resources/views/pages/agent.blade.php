@@ -73,17 +73,17 @@
                                         <td>{{$agent->EMAIL}}</td>
                                         <td>
                                             <div class="table-actions">
-                                                <a href="{{ route('getAgent') }}" class="updateAgent" data-toggle="modal" data-target="#agentUpdate" title="Modifier"><i class="ik ik-edit-2"></i></a>
-                                                <a href="#" title="Désactiver"><i class="ik ik-shield-off"></i></a>
-                                                <a href="#" title="Activer"><i class="ik ik-shield"></i></a>
                                                 <a href="#" class="nav-link dropdown-toggle" href="#"
                                                     id="actionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false"title="Plus">
                                                     <i class="ik ik-more-horizontal-"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right menu-grid" aria-labelledby="actionDropdown">
-                                                    <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top" title="Dashboard"><i class="ik ik-bar-chart-2"></i></a>
-                                                    <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top" title="More"><i class="ik ik-more-horizontal"></i></a>
+                                                    <a class="dropdown-item" data-toggle="tooltip" data-placement="top" href="{{ route('getAgent') }}" class="updateAgent" data-toggle="modal" data-target="#agentUpdate" title="Modifier"><i class="ik ik-edit-2"></i> <label>Modifier</label> </a>
+                                                    <a class="dropdown-item" href="{{ route('getAgent') }}" id="reboot" data-toggle="tooltip" data-placement="top" title="Réinitialiser"><i class="ik ik-rotate-cw"></i> Réinitialiser</a>
+                                                    <a class="dropdown-item" data-toggle="tooltip" data-placement="top" href="{{ route('getAgent') }}" title="Désactiver" id="disable"><i class="ik ik-shield-off"></i> Désactiver</a>
+                                                    <a class="dropdown-item" data-toggle="tooltip" data-placement="top" href="{{ route('getAgent') }}" title="Activer" id="enable"><i class="ik ik-shield"></i> Activer</a>
+                                                    
                                                 </div>
                                             </div>
                                         </td>

@@ -39,8 +39,9 @@ Route::get('/', [PageController::class, 'pageLogin'])->name('/');
 // });
 
 Route::get('/seConnecter',[PageController::class, 'pageLogin'])->name('seConnecter');
-Route::post('/tologin', [LoginController::class, 'tologin'])->name('login');
+// Route::post('/tologin', [LoginController::class, 'tologin'])->name('login');
 
+Route::post('/tologin', [LoginController::class, 'tologin_perform'])->name('login');
 // Route::middleware([
 //     'auth:sanctum',
 //     config('jetstream.auth_session'),
